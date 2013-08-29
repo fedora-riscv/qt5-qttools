@@ -133,7 +133,7 @@ diff -up qttools-opensource-src-5.1.1/src/assistant/clucene/fulltextsearch.pri.s
  HEADERS += qclucene_global_p.h \
 diff -up qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp.system_clucene qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp
 --- qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp.system_clucene	2013-08-25 13:04:37.000000000 -0500
-+++ qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp	2013-08-28 18:57:11.236175387 -0500
++++ qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp	2013-08-28 19:56:42.258339038 -0500
 @@ -59,13 +59,13 @@ bool QCLuceneIndexReader::isLuceneFile(c
  {
      using namespace lucene::index;
@@ -194,7 +194,7 @@ diff -up qttools-opensource-src-5.1.1/src/assistant/clucene/qindexreader.cpp.sys
  {
      TCHAR *fieldName = QStringToTChar(field);
 -    d->reader->setNorm(int32_t(doc), fieldName, qreal(value));
-+    d->reader->setNorm(int32_t(doc), fieldName, (float)value);
++    d->reader->setNorm(int32_t(doc), fieldName, (float_t)value);
      delete [] fieldName;
  }
  
