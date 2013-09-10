@@ -124,7 +124,7 @@ diff -up qttools-opensource-src-5.1.1/src/assistant/clucene/fulltextsearch.pri.s
 -           $$CLUCENEDIR/analysis/standard/StandardFilter.cpp \
 -           $$CLUCENEDIR/analysis/standard/StandardTokenizer.cpp
  
-+INCLUDEPATH += /usr/include/clucene09 $$[QT_INSTALL_LIBS]/clucene09
++INCLUDEPATH += /usr/include/clucene09 $$[QT_INSTALL_LIBS]/clucene09 $$[QT_INSTALL_LIBS]
 +LIBS += -L$$[QT_INSTALL_LIBS]/clucene09 -lclucene
 +DEFINES += LUCENE_ENABLE_REFCOUNT
 +QMAKE_CXXFLAGS += -fpermissive

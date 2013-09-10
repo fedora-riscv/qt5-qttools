@@ -5,12 +5,15 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.1.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
 Url: http://qt-project.org/
 Source0: http://download.qt-project.org/official_releases/qt/5.1/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+
+# qt5-qtjsbackend (and qt5-declarative) supports only ix86, x86_64 and arm , and so do we here
+ExclusiveArch: %{ix86} x86_64 %{arm}
 
 Patch1: qttools-system_clucene.patch
 
@@ -26,7 +29,12 @@ BuildRequires: qt5-qtdeclarative-static
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
+%if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: clucene09-core-devel
+%else
+BuildConflicts: clucene-core-devel > 2
+BuildRequires: clucene-core-devel
+%endif
 %endif
 
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
@@ -264,6 +272,10 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
 %changelog
+* Tue Sep 10 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-2
+- ExclusiveArch: %{ix86} x86_64 %{arm}
+- epel-6 love
+
 * Wed Aug 28 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-1
 - qttools-5.1.1
 - qt5-assistant, qt5-qdbusviewer, qt5-designer-plugin-webkit subpkgs (to match qt4)
