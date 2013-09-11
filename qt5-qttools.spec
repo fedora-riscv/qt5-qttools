@@ -5,7 +5,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.1.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -22,6 +22,8 @@ Source21: designer.desktop
 Source22: linguist.desktop
 Source23: qdbusviewer.desktop
 
+# %%check needs cmake
+BuildRequires: cmake
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static
@@ -87,6 +89,10 @@ and invoke methods on those objects.
 #   src/assistant/3rdparty/clucene.BAK
 %endif
 
+# hack around invalid paths, http://bugzilla.redhat.com/1006254
+sed 's,\${_qt5_linguisttools_install_prefix}/,%{_qt5_archdatadir}/,' \
+  -i src/linguist/Qt5LinguistToolsConfig.cmake.in
+
 
 %build
 %{_qt5_qmake}
@@ -143,6 +149,17 @@ for prl_file in libQt5*.prl ; do
     sed -i -e "/^QMAKE_PRL_LIBS/d" ${prl_file}
   fi
 done
+popd
+
+## work-in-progress... -- rex
+%check
+export CMAKE_PREFIX_PATH=%{buildroot}%{_qt5_prefix}:%{buildroot}%{_prefix}
+export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
+export LD_LIBRARY_PATH=%{buildroot}%{_qt5_libdir}
+mkdir tests/auto/cmake/%{_target_platform}
+pushd tests/auto/cmake/%{_target_platform}
+cmake ..
+ctest --output-on-failure ||:
 popd
 
 
@@ -272,6 +289,10 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
 %changelog
+* Wed Sep 11 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-3
+- wrong path to lrelease (#1006254)
+- %%check: first try
+
 * Tue Sep 10 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-2
 - ExclusiveArch: %{ix86} x86_64 %{arm}
 - epel-6 love
