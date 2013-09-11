@@ -22,8 +22,10 @@ Source21: designer.desktop
 Source22: linguist.desktop
 Source23: qdbusviewer.desktop
 
-# %%check needs cmake
+# %%check needs cmake (and don't want to mess with cmake28)
+%if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
+%endif
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static
@@ -152,6 +154,7 @@ done
 popd
 
 ## work-in-progress... -- rex
+%if 0%{?fedora} || 0%{?rhel} > 6
 %check
 export CMAKE_PREFIX_PATH=%{buildroot}%{_qt5_prefix}:%{buildroot}%{_prefix}
 export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
@@ -161,6 +164,7 @@ pushd tests/auto/cmake/%{_target_platform}
 cmake ..
 ctest --output-on-failure ||:
 popd
+%endif
 
 
 %post
