@@ -5,7 +5,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.1.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -16,6 +16,10 @@ Source0: http://download.qt-project.org/official_releases/qt/5.1/%{version}/subm
 ExclusiveArch: %{ix86} x86_64 %{arm}
 
 Patch1: qttools-system_clucene.patch
+
+# help lrelease/lupdate use/prefer qmake-qt5
+# https://bugzilla.redhat.com/show_bug.cgi?id=1009893
+Patch2: qttools-opensource-src-5.1.1-qmake-qt5.patch
 
 ## upstream patches
 # https://bugreports.qt-project.org/browse/QTBUG-32570
@@ -295,6 +299,9 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
 %changelog
+* Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-5
+- lupdate can't find qmake configuration file default (#1009893)
+
 * Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-4
 - use upstream cmake fix(es) (QTBUG-32570, #1006254)
 
