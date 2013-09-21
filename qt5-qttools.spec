@@ -5,7 +5,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.1.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -16,6 +16,10 @@ Source0: http://download.qt-project.org/official_releases/qt/5.1/%{version}/subm
 ExclusiveArch: %{ix86} x86_64 %{arm}
 
 Patch1: qttools-system_clucene.patch
+
+## upstream patches
+# https://bugreports.qt-project.org/browse/QTBUG-32570
+Patch100: CMake-Use-path-manipulation-features-from-qtbase.patch
 
 Source20: assistant.desktop
 Source21: designer.desktop
@@ -91,9 +95,7 @@ and invoke methods on those objects.
 #   src/assistant/3rdparty/clucene.BAK
 %endif
 
-# hack around invalid paths, http://bugzilla.redhat.com/1006254
-sed 's,\${_qt5_linguisttools_install_prefix}/,%{_qt5_archdatadir}/,' \
-  -i src/linguist/Qt5LinguistToolsConfig.cmake.in
+%patch100 -p1 -b .Qt5LinguistToolsConfig
 
 
 %build
@@ -293,6 +295,9 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
 %changelog
+* Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-4
+- use upstream cmake fix(es) (QTBUG-32570, #1006254)
+
 * Wed Sep 11 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-3
 - wrong path to lrelease (#1006254)
 - %%check: first try
