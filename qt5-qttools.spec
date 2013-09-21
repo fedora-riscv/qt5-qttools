@@ -5,7 +5,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.1.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -98,6 +98,7 @@ and invoke methods on those objects.
 #mv src/assistant/3rdparty/clucene \
 #   src/assistant/3rdparty/clucene.BAK
 %endif
+%patch2 -p1 -b .qmake-qt5
 
 %patch100 -p1 -b .Qt5LinguistToolsConfig
 
@@ -299,7 +300,7 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
 %changelog
-* Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-5
+* Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-6
 - lupdate can't find qmake configuration file default (#1009893)
 
 * Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-4
