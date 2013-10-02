@@ -1,29 +1,36 @@
 
 %global qt_module qttools
 %global system_clucene 1
+%define pre alpha
+
+# define to build docs, need to undef this for bootstrapping
+# where qt5-qttools builds are not yet available
+%define docs 1
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.1.1
-Release: 6%{?dist}
+Version: 5.2.0
+Release: 0.1.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
 Url: http://qt-project.org/
-Source0: http://download.qt-project.org/official_releases/qt/5.1/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+%if 0%{?pre:1}
+Source0: http://download.qt-project.org/development_releases/qt/5.2/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
+%else
+Source0: http://download.qt-project.org/official_releases/qt/5.2/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+%endif
 
-# qt5-qtjsbackend (and qt5-declarative) supports only ix86, x86_64 and arm , and so do we here
-ExclusiveArch: %{ix86} x86_64 %{arm}
+# http://bugzilla.redhat.com/1005482
+ExcludeArch: ppc64 ppc
 
 Patch1: qttools-system_clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
-Patch2: qttools-opensource-src-5.1.1-qmake-qt5.patch
+Patch2: qttools-opensource-src-5.2.0-alpha-qmake-qt5.patch
 
 ## upstream patches
-# https://bugreports.qt-project.org/browse/QTBUG-32570
-Patch100: CMake-Use-path-manipulation-features-from-qtbase.patch
 
 Source20: assistant.desktop
 Source21: designer.desktop
@@ -88,6 +95,17 @@ Summary: D-Bus debugger and viewer
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
+%if 0%{?docs}
+%package doc
+Summary: API documentation for %{name}
+Requires: %{name} = %{version}-%{release}
+# for qhelpgenerator
+BuildRequires: qt5-qttools-devel
+BuildArch: noarch
+%description doc
+%{summary}.
+%endif
+
 
 %prep
 %setup -q -n qttools-opensource-src-%{version}%{?pre:-%{pre}}
@@ -100,17 +118,23 @@ and invoke methods on those objects.
 %endif
 %patch2 -p1 -b .qmake-qt5
 
-%patch100 -p1 -b .Qt5LinguistToolsConfig
-
 
 %build
 %{_qt5_qmake}
 
 make %{?_smp_mflags}
 
+%if 0%{?docs}
+make %{?_smp_mflags} docs
+%endif
+
 
 %install
 make install INSTALL_ROOT=%{buildroot}
+
+%if 0%{?docs}
+make install_docs INSTALL_ROOT=%{buildroot}
+%endif
 
 # Add desktop files, --vendor=qt4 helps avoid possible conflicts with qt3/qt4
 desktop-file-install \
@@ -130,19 +154,17 @@ for icon in src/linguist/linguist/images/icons/linguist-*-32.png ; do
   install -p -m644 -D ${icon} %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/linguist.png
 done
 
-# put non-conflicting binaries with -qt5 postfix in %%{_bindir}
+# hardlink files to %{_bindir}, add -qt5 postfix to not conflict
 mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
   case "${i}" in
    assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator)
-      mv $i ../../../bin/${i}-qt5
-      ln -s ../../../bin/${i}-qt5 .
-      ln -s ../../../bin/${i}-qt5 $i
+      ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt5
+      ln -sv ${i} ${i}-qt5
       ;;
-   *)
-      mv $i ../../../bin/
-      ln -s ../../../bin/$i .
+    *)
+      ln -v  ${i} %{buildroot}%{_bindir}/${i}
       ;;
   esac
 done
@@ -190,8 +212,9 @@ fi
 
 %files
 %{_bindir}/qdbus-qt5
-%{_qt5_bindir}/qdbus
-%{_qt5_bindir}/qdbus-qt5
+%{_bindir}/qtpaths
+%{_qt5_bindir}/qdbus*
+%{_qt5_bindir}/qtpaths
 %{_qt5_libdir}/libQt5CLucene.so.5*
 %{_qt5_libdir}/libQt5Designer.so.5*
 %{_qt5_libdir}/libQt5DesignerComponents.so.5*
@@ -299,7 +322,26 @@ fi
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
 
+%if 0%{?docs}
+%files doc
+%{_qt5_docdir}/qtassistant.qch
+%{_qt5_docdir}/qtassistant/
+%{_qt5_docdir}/qtdesigner.qch
+%{_qt5_docdir}/qtdesigner/
+%{_qt5_docdir}/qthelp.qch
+%{_qt5_docdir}/qthelp/
+%{_qt5_docdir}/qtlinguist.qch
+%{_qt5_docdir}/qtlinguist/
+%{_qt5_docdir}/qtuitools.qch
+%{_qt5_docdir}/qtuitools/
+%endif
+
+
 %changelog
+* Tue Oct 01 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.1.alpha
+- 5.2.0-alpha
+- -doc subpkg
+
 * Sat Sep 21 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-6
 - lupdate can't find qmake configuration file default (#1009893)
 
