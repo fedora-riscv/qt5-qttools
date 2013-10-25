@@ -1,16 +1,16 @@
 
 %global qt_module qttools
 %global system_clucene 1
-%define pre alpha
+%define pre beta1
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
-#define docs 1
+%define docs 1
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.2.0
-Release: 0.2.%{pre}%{?dist}
+Release: 0.3.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -335,6 +335,9 @@ fi
 
 
 %changelog
+* Thu Oct 24 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.3.beta1
+- 5.2.0-beta1
+
 * Wed Oct 16 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.2.alpha
 - bootstrap ppc
 
