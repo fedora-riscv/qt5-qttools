@@ -1,6 +1,6 @@
-diff -up qttools-opensource-src-5.2.0-alpha/src/linguist/lrelease/main.cpp.qmake-qt5 qttools-opensource-src-5.2.0-alpha/src/linguist/lrelease/main.cpp
---- qttools-opensource-src-5.2.0-alpha/src/linguist/lrelease/main.cpp.qmake-qt5	2013-10-01 22:55:03.530163172 -0500
-+++ qttools-opensource-src-5.2.0-alpha/src/linguist/lrelease/main.cpp	2013-10-01 22:56:27.685283658 -0500
+diff -up qttools-opensource-src-5.2.0-rc1/src/linguist/lrelease/main.cpp.qmake-qt5 qttools-opensource-src-5.2.0-rc1/src/linguist/lrelease/main.cpp
+--- qttools-opensource-src-5.2.0-rc1/src/linguist/lrelease/main.cpp.qmake-qt5	2013-11-26 19:01:52.000000000 -0600
++++ qttools-opensource-src-5.2.0-rc1/src/linguist/lrelease/main.cpp	2013-12-02 11:33:01.346611970 -0600
 @@ -318,9 +318,9 @@ int main(int argc, char **argv)
              option.qmake_abslocation = QString::fromLocal8Bit(qgetenv("QMAKE"));
              if (option.qmake_abslocation.isEmpty())
@@ -13,10 +13,10 @@ diff -up qttools-opensource-src-5.2.0-alpha/src/linguist/lrelease/main.cpp.qmake
  #endif
              option.initProperties();
              QMakeVfs vfs;
-diff -up qttools-opensource-src-5.2.0-alpha/src/linguist/lupdate/main.cpp.qmake-qt5 qttools-opensource-src-5.2.0-alpha/src/linguist/lupdate/main.cpp
---- qttools-opensource-src-5.2.0-alpha/src/linguist/lupdate/main.cpp.qmake-qt5	2013-10-01 22:55:03.531163161 -0500
-+++ qttools-opensource-src-5.2.0-alpha/src/linguist/lupdate/main.cpp	2013-10-01 22:55:56.163613145 -0500
-@@ -1055,7 +1055,7 @@ int main(int argc, char **argv)
+diff -up qttools-opensource-src-5.2.0-rc1/src/linguist/lupdate/main.cpp.qmake-qt5 qttools-opensource-src-5.2.0-rc1/src/linguist/lupdate/main.cpp
+--- qttools-opensource-src-5.2.0-rc1/src/linguist/lupdate/main.cpp.qmake-qt5	2013-11-26 19:01:52.000000000 -0600
++++ qttools-opensource-src-5.2.0-rc1/src/linguist/lupdate/main.cpp	2013-12-02 11:33:01.347611960 -0600
+@@ -1070,7 +1070,7 @@ int main(int argc, char **argv)
          ProFileGlobals option;
          option.qmake_abslocation = QString::fromLocal8Bit(qgetenv("QMAKE"));
          if (option.qmake_abslocation.isEmpty())

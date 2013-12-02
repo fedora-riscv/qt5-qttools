@@ -1,7 +1,7 @@
 
 %global qt_module qttools
 %global system_clucene 1
-%define pre beta1
+%define pre rc1
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.2.0
-Release: 0.5.%{pre}%{?dist}
+Release: 0.10.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -28,7 +28,7 @@ Patch1: qttools-system_clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
-Patch2: qttools-opensource-src-5.2.0-alpha-qmake-qt5.patch
+Patch2: qttools-opensource-src-5.2.0-qmake-qt5.patch
 
 ## upstream patches
 
@@ -338,6 +338,9 @@ fi
 
 
 %changelog
+* Mon Dec 02 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.10.rc1
+- 5.2.0-rc1
+
 * Mon Nov 25 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.5.beta1
 - enable -doc only on primary archs (allow secondary bootstrap)
 
