@@ -5,16 +5,14 @@
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
-%if 0%{?rhel} < 7
 %ifarch %{arm} %{ix86} x86_64
 %define docs 1
-%endif
 %endif
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.2.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -339,6 +337,9 @@ fi
 
 
 %changelog
+* Tue Jan 14 2014 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-2
+- epel7 bootstrapped
+
 * Thu Dec 12 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-1
 - 5.2.0
 
