@@ -245,7 +245,7 @@ fi
 %{_datadir}/icons/hicolor/*/apps/assistant*.*
 
 %files -n qt5-designer-plugin-webkit
-%{_qt5_archdatadir}/plugins/designer/libqwebview.so
+%{_qt5_plugindir}/designer/libqwebview.so
 
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -344,6 +344,10 @@ fi
 %if 0%{?_qt5_examplesdir:1}
 %files examples
 %{_qt5_examplesdir}/
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %endif
 
 
