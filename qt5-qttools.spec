@@ -319,6 +319,11 @@ fi
 %{_datadir}/applications/*linguist.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
 %{_datadir}/icons/hicolor/*/apps/linguist*.*
+# example designer plugins
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -344,10 +349,6 @@ fi
 %if 0%{?_qt5_examplesdir:1}
 %files examples
 %{_qt5_examplesdir}/
-%{_qt5_plugindir}/designer/libcontainerextension.so
-%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
-%{_qt5_plugindir}/designer/libtaskmenuextension.so
-%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %endif
 
 
