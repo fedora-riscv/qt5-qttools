@@ -12,7 +12,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.2.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -104,6 +104,12 @@ BuildArch: noarch
 %description doc
 %{summary}.
 %endif
+
+%package examples
+Summary: Programming examples for %{name}
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description examples
+%{summary}.
 
 
 %prep
@@ -335,8 +341,16 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
+%if 0%{?_qt5_examplesdir:1}
+%files examples
+%{_qt5_examplesdir}/
+%endif
+
 
 %changelog
+* Mon Jan 27 2014 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-3
+- -examples subpkg
+
 * Tue Jan 14 2014 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-2
 - epel7 bootstrapped
 
