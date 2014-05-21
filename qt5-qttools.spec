@@ -11,16 +11,16 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.2.1
+Version: 5.3.0
 Release: 1%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
 Url: http://qt-project.org/
 %if 0%{?pre:1}
-Source0: http://download.qt-project.org/development_releases/qt/5.2/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
+Source0: http://download.qt-project.org/development_releases/qt/5.3/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
 %else
-Source0: http://download.qt-project.org/official_releases/qt/5.2/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+Source0: http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
 Patch1: qttools-system_clucene.patch
@@ -353,6 +353,9 @@ fi
 
 
 %changelog
+* Wed May 21 2014 Jan Grulich <jgrulich@redhat.com> 5.3.0-1
+- 5.3.0
+
 * Wed Feb 05 2014 Rex Dieter <rdieter@fedoraproject.org> 5.2.1-1
 - 5.2.1
 
