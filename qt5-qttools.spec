@@ -23,7 +23,7 @@ Source0: http://download.qt-project.org/development_releases/qt/5.3/%{version}-%
 Source0: http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
-Patch1: qttools-system_clucene.patch
+# Patch1: qttools-system_clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -116,7 +116,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %setup -q -n qttools-opensource-src-%{version}%{?pre:-%{pre}}
 
 %if 0%{?system_clucene}
-%patch1 -p1 -b .system_clucene
+# %patch1 -p1 -b .system_clucene
 # bundled libs
 #mv src/assistant/3rdparty/clucene \
 #   src/assistant/3rdparty/clucene.BAK
@@ -288,12 +288,14 @@ fi
 %{_bindir}/qcollectiongenerator*
 %{_bindir}/qhelpconverter*
 %{_bindir}/qhelpgenerator*
+%{_bindir}/qtdiag*
 %{_qt5_bindir}/designer*
 %{_qt5_bindir}/lconvert*
 %{_qt5_bindir}/linguist*
 %{_qt5_bindir}/lrelease*
 %{_qt5_bindir}/lupdate*
 %{_qt5_bindir}/pixeltool*
+%{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
 %{_qt5_bindir}/qhelpgenerator*
@@ -324,6 +326,7 @@ fi
 %{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
 %{_qt5_plugindir}/designer/libworldtimeclockplugin.so
+%{_qt5_plugindir}/designer/libqquickwidget.so
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
