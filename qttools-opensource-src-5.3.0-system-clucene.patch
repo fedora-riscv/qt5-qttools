@@ -131,6 +131,73 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri q
  
  #Header files
  HEADERS += qclucene_global_p.h \
+diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h	2014-05-15 19:12:39.000000000 +0200
++++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:11:39.000000000 +0200
+@@ -29,10 +29,6 @@
+ // We mean it.
+ //
+ 
+-#if !defined(_MSC_VER)
+-#   include "qclucene-config_p.h"
+-#endif
+-
+ #include <QtCore/QChar>
+ #include <QtCore/QString>
+ 
+@@ -54,52 +50,6 @@
+ #   define Q_CLUCENE_EXPORT Q_DECL_IMPORT
+ #endif
+ 
+-//
+-//  W A R N I N G
+-//  -------------
+-//
+-// adjustments here, need to be done in
+-// QTDIR/src/3rdparty/clucene/src/CLucene/StdHeader.h as well
+-//
+-#if defined(_LUCENE_DONTIMPLEMENT_NS_MACROS)
+-
+-#elif !defined(DISABLE_NAMESPACE)
+-#   ifdef QT_NAMESPACE
+-#       define CL_NS_DEF(sub) namespace QT_NAMESPACE { namespace lucene{ namespace sub{
+-#       define CL_NS_DEF2(sub,sub2) namespace QT_NAMESPACE { namespace lucene{ namespace sub{ namespace sub2 {
+-
+-#       define CL_NS_END }}}
+-#       define CL_NS_END2 }}}}
+-
+-#       define CL_NS_USE(sub) using namespace QT_NAMESPACE::lucene::sub;
+-#       define CL_NS_USE2(sub,sub2) using namespace QT_NAMESPACE::lucene::sub::sub2;
+-
+-#       define CL_NS(sub) QT_NAMESPACE::lucene::sub
+-#       define CL_NS2(sub,sub2) QT_NAMESPACE::lucene::sub::sub2
+-#   else
+-#       define CL_NS_DEF(sub) namespace lucene{ namespace sub{
+-#       define CL_NS_DEF2(sub,sub2) namespace lucene{ namespace sub{ namespace sub2 {
+-
+-#       define CL_NS_END }}
+-#       define CL_NS_END2 }}}
+-
+-#       define CL_NS_USE(sub) using namespace lucene::sub;
+-#       define CL_NS_USE2(sub,sub2) using namespace lucene::sub::sub2;
+-
+-#       define CL_NS(sub) lucene::sub
+-#       define CL_NS2(sub,sub2) lucene::sub::sub2
+-#   endif
+-#else
+-#   define CL_NS_DEF(sub)
+-#   define CL_NS_DEF2(sub, sub2)
+-#   define CL_NS_END
+-#   define CL_NS_END2
+-#   define CL_NS_USE(sub)
+-#   define CL_NS_USE2(sub,sub2)
+-#   define CL_NS(sub)
+-#   define CL_NS2(sub,sub2)
+-#endif
+-
+ namespace QtCLuceneHelpers {
+     inline TCHAR* QStringToTChar(const QString &str)
+     {
 diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexreader.cpp
 --- qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp	2014-05-15 19:12:39.000000000 +0200
 +++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexreader.cpp	2014-05-30 00:27:47.000000000 +0200
