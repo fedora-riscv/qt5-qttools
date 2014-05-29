@@ -12,7 +12,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -116,10 +116,9 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %setup -q -n qttools-opensource-src-%{version}%{?pre:-%{pre}}
 
 %if 0%{?system_clucene}
-# %patch1 -p1 -b .system_clucene
+%patch1 -p1 -b .system_clucene
 # bundled libs
-#mv src/assistant/3rdparty/clucene \
-#   src/assistant/3rdparty/clucene.BAK
+rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
 
@@ -356,6 +355,9 @@ fi
 
 
 %changelog
+* Thu May 29 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.3.0-2
+- restore system-clucene patch, rm the bundled copy
+
 * Wed May 21 2014 Jan Grulich <jgrulich@redhat.com> 5.3.0-1
 - 5.3.0
 
