@@ -23,7 +23,7 @@ Source0: http://download.qt-project.org/development_releases/qt/5.3/%{version}-%
 Source0: http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
-Patch1: qttools-system_clucene.patch
+Patch1: qttools-opensource-src-5.3.0-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
