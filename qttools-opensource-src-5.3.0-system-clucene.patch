@@ -133,8 +133,8 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri q
  HEADERS += qclucene_global_p.h \
 diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h
 --- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:11:39.000000000 +0200
-@@ -29,10 +29,6 @@
++++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:29:04.000000000 +0200
+@@ -29,21 +29,9 @@
  // We mean it.
  //
  
@@ -145,7 +145,18 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h 
  #include <QtCore/QChar>
  #include <QtCore/QString>
  
-@@ -54,52 +50,6 @@
+-#if !defined(_MSC_VER) && !defined(__MINGW32__) && defined(_CL_HAVE_WCHAR_H) && defined(_CL_HAVE_WCHAR_T)
+-#   if !defined(TCHAR)
+-#       define TCHAR wchar_t
+-#   endif
+-#else
+-#   include <qt_windows.h>
+-#endif
+-
+ QT_BEGIN_NAMESPACE
+ 
+ #ifdef QT_STATIC
+@@ -54,52 +42,6 @@
  #   define Q_CLUCENE_EXPORT Q_DECL_IMPORT
  #endif
  
