@@ -131,10 +131,22 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri q
  
  #Header files
  HEADERS += qclucene_global_p.h \
+diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene-config_p.h
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h	2014-05-15 19:12:39.000000000 +0200
++++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene-config_p.h	2014-05-30 01:43:02.000000000 +0200
+@@ -15,6 +15,8 @@
+ **
+ ****************************************************************************/
+ 
++#error This header must not be included when building against system CLucene.
++
+ #ifndef QCLUCENE_CONFIG_P_H
+ #define QCLUCENE_CONFIG_P_H
+ 
 diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h
 --- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:29:04.000000000 +0200
-@@ -29,21 +29,9 @@
++++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:41:25.000000000 +0200
+@@ -29,20 +29,10 @@
  // We mean it.
  //
  
@@ -152,11 +164,11 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h 
 -#else
 -#   include <qt_windows.h>
 -#endif
--
++#include <CLucene/StdHeader.h>
+ 
  QT_BEGIN_NAMESPACE
  
- #ifdef QT_STATIC
-@@ -54,52 +42,6 @@
+@@ -54,52 +44,6 @@
  #   define Q_CLUCENE_EXPORT Q_DECL_IMPORT
  #endif
  
