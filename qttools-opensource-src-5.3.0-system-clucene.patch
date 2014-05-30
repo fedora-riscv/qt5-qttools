@@ -1,6 +1,6 @@
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/fulltextsearch.pri
---- qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/fulltextsearch.pri	2014-05-30 00:26:52.000000000 +0200
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri	2014-05-30 12:31:10.921201196 -0500
 @@ -1,125 +1,8 @@
 -DEFINES += _BUILD_FOR_QT_ LUCENE_DISABLE_MEMTRACKING
 -win32:DEFINES += _CRT_SECURE_NO_DEPRECATE _MT
@@ -131,9 +131,9 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri q
  
  #Header files
  HEADERS += qclucene_global_p.h \
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene-config_p.h
---- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene-config_p.h	2014-05-30 01:43:02.000000000 +0200
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h	2014-05-30 12:31:10.922201214 -0500
 @@ -15,6 +15,8 @@
  **
  ****************************************************************************/
@@ -143,9 +143,9 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene-config_p.h 
  #ifndef QCLUCENE_CONFIG_P_H
  #define QCLUCENE_CONFIG_P_H
  
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h
---- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-05-30 01:41:25.000000000 +0200
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h	2014-05-30 12:31:10.923201233 -0500
 @@ -29,20 +29,10 @@
  // We mean it.
  //
@@ -168,7 +168,7 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h 
  
  QT_BEGIN_NAMESPACE
  
-@@ -54,52 +44,6 @@
+@@ -54,52 +44,6 @@ QT_BEGIN_NAMESPACE
  #   define Q_CLUCENE_EXPORT Q_DECL_IMPORT
  #endif
  
@@ -221,10 +221,10 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qclucene_global_p.h 
  namespace QtCLuceneHelpers {
      inline TCHAR* QStringToTChar(const QString &str)
      {
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexreader.cpp
---- qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexreader.cpp	2014-05-30 00:27:47.000000000 +0200
-@@ -59,13 +59,13 @@
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp	2014-05-30 12:31:10.924201251 -0500
+@@ -59,13 +59,13 @@ bool QCLuceneIndexReader::isLuceneFile(c
  {
      using namespace lucene::index;
  
@@ -240,7 +240,7 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qtt
  }
  
  QCLuceneIndexReader QCLuceneIndexReader::open(const QString &path)
-@@ -73,7 +73,7 @@
+@@ -73,7 +73,7 @@ QCLuceneIndexReader QCLuceneIndexReader:
      using namespace lucene::index;
  
      QCLuceneIndexReader indexReader;
@@ -249,7 +249,7 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qtt
  
      return indexReader;
  }
-@@ -81,25 +81,25 @@
+@@ -81,25 +81,25 @@ QCLuceneIndexReader QCLuceneIndexReader:
  void QCLuceneIndexReader::unlock(const QString &path)
  {
      using namespace lucene::index;
@@ -279,7 +279,7 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qtt
  }
  
  void QCLuceneIndexReader::close()
-@@ -155,7 +155,7 @@
+@@ -155,7 +155,7 @@ bool QCLuceneIndexReader::document(qint3
  void QCLuceneIndexReader::setNorm(qint32 doc, const QString &field, qreal value)
  {
      TCHAR *fieldName = QStringToTChar(field);
@@ -288,10 +288,10 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexreader.cpp qtt
      delete [] fieldName;
  }
  
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexwriter.cpp
---- qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qindexwriter.cpp	2014-05-30 00:29:09.000000000 +0200
-@@ -50,7 +50,7 @@
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp	2014-05-30 12:31:10.925201269 -0500
+@@ -50,7 +50,7 @@ QCLuceneIndexWriter::QCLuceneIndexWriter
      : d(new QCLuceneIndexWriterPrivate())
      , analyzer(analyzer)
  {
@@ -300,10 +300,10 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qindexwriter.cpp qtt
          analyzer.d->analyzer, create, closeDir);
  }
  
-diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qsearchable.cpp
---- qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp	2014-05-15 19:12:39.000000000 +0200
-+++ qttools-opensource-src-5.3.0-system-clucene/src/assistant/clucene/qsearchable.cpp	2014-05-30 00:26:52.000000000 +0200
-@@ -95,7 +95,7 @@
+diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp.system_clucene qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp
+--- qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp.system_clucene	2014-05-15 12:12:39.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp	2014-05-30 12:31:10.926201287 -0500
+@@ -95,7 +95,7 @@ QCLuceneIndexSearcher::QCLuceneIndexSear
      : QCLuceneSearcher()
  {
      lucene::search::IndexSearcher *searcher =
@@ -312,3 +312,14 @@ diff -ur qttools-opensource-src-5.3.0/src/assistant/clucene/qsearchable.cpp qtto
  
      reader.d->reader = searcher->getReader();
      reader.d->deleteCLuceneIndexReader = false;
+diff -up qttools-opensource-src-5.3.0/src/assistant/help/help.pro.system_clucene qttools-opensource-src-5.3.0/src/assistant/help/help.pro
+--- qttools-opensource-src-5.3.0/src/assistant/help/help.pro.system_clucene	2014-05-15 12:12:40.000000000 -0500
++++ qttools-opensource-src-5.3.0/src/assistant/help/help.pro	2014-05-30 12:50:57.233287205 -0500
+@@ -34,6 +34,7 @@ SOURCES += qhelpenginecore.cpp \
+     qhelp_global.cpp
+ 
+ # access to clucene
++INCLUDEPATH += /usr/include/clucene09 $$[QT_INSTALL_LIBS]/clucene09 $$[QT_INSTALL_LIBS]
+ SOURCES += qhelpsearchindexwriter_clucene.cpp \
+     qhelpsearchindexreader_clucene.cpp
+ HEADERS += qhelpenginecore.h \
