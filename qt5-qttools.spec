@@ -12,7 +12,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -64,6 +64,9 @@ BuildRequires: clucene-core-devel
 Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
+# Qt5DesignerConfig.cmake references libqwebview.so
+# at least until we omit/split-out *Plugin.cmake files from packaging
+Requires: qt5-designer-plugin-webkit%{?_isa}
 Provides: qt5-designer = %{version}-%{release}
 Provides: qt5-linguist = %{version}-%{release}
 %description devel
@@ -355,6 +358,9 @@ fi
 
 
 %changelog
+* Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
+- -devel: Requires: qt5-designer-plugin-webkit
+
 * Tue Sep 16 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-1
 - 5.3.2
 
