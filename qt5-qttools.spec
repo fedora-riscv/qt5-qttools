@@ -9,18 +9,20 @@
 %define docs 1
 %endif
 
+%define pre beta
+
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.3.2
-Release: 2%{?dist}
+Version: 5.4.0
+Release: 0.1.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
 Url: http://qt-project.org/
 %if 0%{?pre:1}
-Source0: http://download.qt-project.org/development_releases/qt/5.3/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
+Source0: http://download.qt-project.org/development_releases/qt/5.4/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
 %else
-Source0: http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+Source0: http://download.qt-project.org/official_releases/qt/5.4/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
 Patch1: qttools-opensource-src-5.3.0-system-clucene.patch
@@ -64,9 +66,6 @@ BuildRequires: clucene-core-devel
 Summary: Development files for %{name}
 Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
-# Qt5DesignerConfig.cmake references libqwebview.so
-# at least until we omit/split-out *Plugin.cmake files from packaging
-Requires: qt5-designer-plugin-webkit%{?_isa}
 Provides: qt5-designer = %{version}-%{release}
 Provides: qt5-linguist = %{version}-%{release}
 %description devel
@@ -227,6 +226,7 @@ fi
 %{_qt5_libdir}/libQt5DesignerComponents.so.5*
 %{_qt5_libdir}/libQt5Help.so.5*
 %{_qt5_datadir}/phrasebooks/
+%dir %{_qt5_libdir}/cmake/Qt5Designer/
 
 %post -n qt5-assistant
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -248,6 +248,7 @@ fi
 
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
 
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -311,9 +312,12 @@ fi
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
 %{_qt5_libdir}/libQt5Help.so
-%{_qt5_libdir}/cmake/Qt5Designer/
-%{_qt5_libdir}/cmake/Qt5Help/
-%{_qt5_libdir}/cmake/Qt5LinguistTools/
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
+%dir %{_qt5_libdir}/cmake/Qt5Help/
+%{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
+%dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
 %{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
@@ -329,6 +333,11 @@ fi
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
 %{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %{_qt5_plugindir}/designer/libqquickwidget.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -358,6 +367,9 @@ fi
 
 
 %changelog
+* Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.beta
+- 5.4.0-beta
+
 * Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
 - -devel: Requires: qt5-designer-plugin-webkit
 
