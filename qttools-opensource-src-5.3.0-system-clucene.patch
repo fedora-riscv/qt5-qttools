@@ -126,7 +126,7 @@ diff -up qttools-opensource-src-5.3.0/src/assistant/clucene/fulltextsearch.pri.s
  
 +INCLUDEPATH += /usr/include/clucene09 $$[QT_INSTALL_LIBS]/clucene09 $$[QT_INSTALL_LIBS]
 +LIBS += -L$$[QT_INSTALL_LIBS]/clucene09 -lclucene
-+DEFINES += LUCENE_ENABLE_REFCOUNT
++#DEFINES += LUCENE_ENABLE_REFCOUNT (must be set at CLucene build time!)
 +QMAKE_CXXFLAGS += -fpermissive
  
  #Header files

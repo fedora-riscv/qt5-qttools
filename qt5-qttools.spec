@@ -1,6 +1,8 @@
 
 %global qt_module qttools
+%if 0%{?fedora} || 0%{?rhel} > 6
 %global system_clucene 1
+%endif
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
@@ -14,7 +16,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.1.%{pre}%{?dist}
+Release: 0.2.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -49,12 +51,7 @@ BuildRequires: qt5-qtdeclarative-static
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
-%if 0%{?fedora} || 0%{?rhel} > 6
-BuildRequires: clucene09-core-devel
-%else
-BuildConflicts: clucene-core-devel > 2
-BuildRequires: clucene-core-devel
-%endif
+BuildRequires: clucene09-core-devel >= 0.9.21b-11
 %endif
 
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
@@ -367,6 +364,9 @@ fi
 
 
 %changelog
+* Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.beta
+- BR and rebuild against reference-counting-enabled clucene09 (#1128293)
+
 * Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.beta
 - 5.4.0-beta
 
