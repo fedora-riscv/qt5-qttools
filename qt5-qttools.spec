@@ -75,10 +75,10 @@ BuildArch: noarch
 %package devel
 Summary: Development files for %{name}
 Requires: %{name} = %{version}-%{release}
-Requires: libqt5clucene%{?_isa} = %{version}-%{release}
-Requires: libqt5designer%{?_isa} = %{version}-%{release}
-Requires: libqt5designercomponents%{?_isa} = %{version}-%{release}
-Requires: libqt5help%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs-clucene%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
 Provides: qt5-designer = %{version}-%{release}
 Provides: qt5-linguist = %{version}-%{release}
@@ -91,36 +91,36 @@ Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 %description static
 %{summary}.
 
-%package -n libqt5clucene
+%package libs-clucene
 Summary: Qt5 CLucene runtime library
 Requires: %{name}-common = %{version}-%{release}
 # when split happened
 Conflicts: qt5-tools < 5.4.0-0.2
-%description -n libqt5clucene
+%description libs-clucene
 %{summary}.
 
-%package -n libqt5designer
+%package libs-designer
 Summary: Qt5 Designer runtime library
 Requires: %{name}-common = %{version}-%{release}
 # when split happened
 Conflicts: qt5-tools < 5.4.0-0.2
-%description -n libqt5designer
+%description libs-designer
 %{summary}.
 
-%package -n libqt5designercomponents
+%package libs-designercomponents
 Summary: Qt5 Designer Components runtime library
 Requires: %{name}-common = %{version}-%{release}
 # when split happened
 Conflicts: qt5-tools < 5.4.0-0.2
-%description -n libqt5designercomponents
+%description -n libs-designercomponents
 %{summary}.
 
-%package -n libqt5help
+%package libs-help
 Summary: Qt5 Help runtime library
 Requires: %{name}-common = %{version}-%{release}
 # when split happened
 Conflicts: qt5-tools < 5.4.0-0.2
-%description -n libqt5help
+%description libs-help
 %{summary}.
 
 %package -n qt5-assistant
@@ -131,7 +131,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 %package -n qt5-designer-plugin-webkit
 Summary: Qt5 designer plugin for WebKit
-Requires: libqt5designer%{?_isa} = %{version}-%{release}
+Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %description -n qt5-designer-plugin-webkit
 %{summary}.
 
@@ -258,25 +258,25 @@ popd
 %files common
 %doc LGPL_EXCEPTION.txt LICENSE.LGPL*
 
-%post   -n libqt5clucene -p /sbin/ldconfig
-%postun -n libqt5clucene -p /sbin/ldconfig
-%files  -n libqt5clucene
+%post   libs-clucene -p /sbin/ldconfig
+%postun libs-clucene -p /sbin/ldconfig
+%files  libs-clucene
 %{_qt5_libdir}/libQt5CLucene.so.5*
 
-%post   -n libqt5designer -p /sbin/ldconfig
-%postun -n libqt5designer -p /sbin/ldconfig
-%files  -n libqt5designer
+%post   libs-designer -p /sbin/ldconfig
+%postun libs-designer -p /sbin/ldconfig
+%files  libs-designer
 %{_qt5_libdir}/libQt5Designer.so.5*
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
 
-%post   -n libqt5designercomponents -p /sbin/ldconfig
-%postun -n libqt5designercomponents -p /sbin/ldconfig
-%files  -n libqt5designercomponents
+%post   libs-designercomponents -p /sbin/ldconfig
+%postun libs-designercomponents -p /sbin/ldconfig
+%files  libs-designercomponents
 %{_qt5_libdir}/libQt5DesignerComponents.so.5*
 
-%post   -n libqt5help -p /sbin/ldconfig
-%postun -n libqt5help -p /sbin/ldconfig
-%files  -n libqt5help
+%post   libs-help -p /sbin/ldconfig
+%postun libs-help -p /sbin/ldconfig
+%files  libs-help
 %{_qt5_libdir}/libQt5Help.so.5*
 
 %post -n qt5-assistant
