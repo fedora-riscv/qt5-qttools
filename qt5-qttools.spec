@@ -112,7 +112,7 @@ Summary: Qt5 Designer Components runtime library
 Requires: %{name}-common = %{version}-%{release}
 # when split happened
 Conflicts: qt5-tools < 5.4.0-0.2
-%description -n libs-designercomponents
+%description libs-designercomponents
 %{summary}.
 
 %package libs-help
