@@ -1,4 +1,5 @@
 
+%global bootstrap 1
 %global qt_module qttools
 %if 0%{?fedora} || 0%{?rhel} > 6
 %global system_clucene 1
@@ -7,8 +8,10 @@
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
+%if ! 0%{?bootstrap}
 %ifarch %{arm} %{ix86} x86_64
 %define docs 1
+%endif
 %endif
 
 %define pre beta
@@ -16,7 +19,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.2.%{pre}%{?dist}
+Release: 0.3.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -54,14 +57,28 @@ BuildRequires: qt5-qtwebkit-devel
 BuildRequires: clucene09-core-devel >= 0.9.21b-11
 %endif
 
+Requires: %{name}-common = %{version}-%{release}
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
+
+# when -libs were split out, for multilib upgrade path
+Obsoletes: qt5-tools < 5.4.0-0.2
 
 %description
 %{summary}.
 
+%package common
+Summary: Common files for %{name}
+BuildArch: noarch
+%description common
+%{summary}.
+
 %package devel
 Summary: Development files for %{name}
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+Requires: libqt5clucene%{?_isa} = %{version}-%{release}
+Requires: libqt5designer%{?_isa} = %{version}-%{release}
+Requires: libqt5designercomponents%{?_isa} = %{version}-%{release}
+Requires: libqt5help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
 Provides: qt5-designer = %{version}-%{release}
 Provides: qt5-linguist = %{version}-%{release}
@@ -74,20 +91,53 @@ Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 %description static
 %{summary}.
 
+%package -n libqt5clucene
+Summary: Qt5 CLucene runtime library
+Requires: %{name}-common = %{version}-%{release}
+# when split happened
+Conflicts: qt5-tools < 5.4.0-0.2
+%description -n libqt5clucene
+%{summary}.
+
+%package -n libqt5designer
+Summary: Qt5 Designer runtime library
+Requires: %{name}-common = %{version}-%{release}
+# when split happened
+Conflicts: qt5-tools < 5.4.0-0.2
+%description -n libqt5designer
+%{summary}.
+
+%package -n libqt5designercomponents
+Summary: Qt5 Designer Components runtime library
+Requires: %{name}-common = %{version}-%{release}
+# when split happened
+Conflicts: qt5-tools < 5.4.0-0.2
+%description -n libqt5designercomponents
+%{summary}.
+
+%package -n libqt5help
+Summary: Qt5 Help runtime library
+Requires: %{name}-common = %{version}-%{release}
+# when split happened
+Conflicts: qt5-tools < 5.4.0-0.2
+%description -n libqt5help
+%{summary}.
+
 %package -n qt5-assistant
 Summary: Documentation browser for Qt5
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-assistant
 %{summary}.
 
 %package -n qt5-designer-plugin-webkit
 Summary: Qt5 designer plugin for WebKit
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: libqt5designer%{?_isa} = %{version}-%{release}
 %description -n qt5-designer-plugin-webkit
 %{summary}.
 
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
+Requires: %{name}-common = %{version}-%{release}
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
 %description -n qt5-qdbusviewer
 QDbusviewer can be used to inspect D-Bus objects of running programs
@@ -96,7 +146,6 @@ and invoke methods on those objects.
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
-Requires: %{name} = %{version}-%{release}
 # for qhelpgenerator
 BuildRequires: qt5-qttools-devel
 BuildArch: noarch
@@ -106,7 +155,7 @@ BuildArch: noarch
 
 %package examples
 Summary: Programming examples for %{name}
-Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: %{name}-common = %{version}-%{release}
 %description examples
 %{summary}.
 
@@ -199,31 +248,36 @@ popd
 %endif
 
 
-%post
-/sbin/ldconfig
-touch --no-create %{_datadir}/icons/hicolor ||:
-
-%posttrans
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-
-%postun
-/sbin/ldconfig
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor ||:
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-fi
-
 %files
 %{_bindir}/qdbus-qt5
 %{_bindir}/qtpaths
-%{_qt5_bindir}/qdbus*
+%{_qt5_bindir}/qdbus
+%{_qt5_bindir}/qdbus-qt5
 %{_qt5_bindir}/qtpaths
+
+%files common
+%doc LGPL_EXCEPTION.txt LICENSE.LGPL*
+
+%post   -n libqt5clucene -p /sbin/ldconfig
+%postun -n libqt5clucene -p /sbin/ldconfig
+%files  -n libqt5clucene
 %{_qt5_libdir}/libQt5CLucene.so.5*
+
+%post   -n libqt5designer -p /sbin/ldconfig
+%postun -n libqt5designer -p /sbin/ldconfig
+%files  -n libqt5designer
 %{_qt5_libdir}/libQt5Designer.so.5*
-%{_qt5_libdir}/libQt5DesignerComponents.so.5*
-%{_qt5_libdir}/libQt5Help.so.5*
-%{_qt5_datadir}/phrasebooks/
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
+
+%post   -n libqt5designercomponents -p /sbin/ldconfig
+%postun -n libqt5designercomponents -p /sbin/ldconfig
+%files  -n libqt5designercomponents
+%{_qt5_libdir}/libQt5DesignerComponents.so.5*
+
+%post   -n libqt5help -p /sbin/ldconfig
+%postun -n libqt5help -p /sbin/ldconfig
+%files  -n libqt5help
+%{_qt5_libdir}/libQt5Help.so.5*
 
 %post -n qt5-assistant
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -303,6 +357,8 @@ fi
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
 %{_qt5_headerdir}/QtHelp/
+# phrasebooks used by linguist
+%{_qt5_datadir}/phrasebooks/
 %{_qt5_libdir}/libQt5CLucene.prl
 %{_qt5_libdir}/libQt5CLucene.so
 %{_qt5_libdir}/libQt5Designer*.prl
@@ -324,12 +380,14 @@ fi
 %{_datadir}/applications/*linguist.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
 %{_datadir}/icons/hicolor/*/apps/linguist*.*
+
 # example designer plugins
 %{_qt5_plugindir}/designer/libcontainerextension.so
 %{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
 %{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %{_qt5_plugindir}/designer/libqquickwidget.so
+%dir %{_qt5_libdir}/cmake/Qt5Designer/
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
@@ -345,6 +403,7 @@ fi
 
 %if 0%{?docs}
 %files doc
+%doc LICENSE.FDL
 %{_qt5_docdir}/qtassistant.qch
 %{_qt5_docdir}/qtassistant/
 %{_qt5_docdir}/qtdesigner.qch
@@ -364,6 +423,10 @@ fi
 
 
 %changelog
+* Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.beta
+- libQt5Designer should be in a subpackage (#1156685)
+- -doc: disable(boostrap for new clucene), drop dep on main pkg
+
 * Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.beta
 - BR and rebuild against reference-counting-enabled clucene09 (#1128293)
 
