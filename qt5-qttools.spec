@@ -1,5 +1,5 @@
 
-%global bootstrap 1
+#global bootstrap 1
 %global qt_module qttools
 %if 0%{?fedora} || 0%{?rhel} > 6
 %global system_clucene 1
@@ -19,7 +19,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.3.%{pre}%{?dist}
+Release: 0.4.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -54,7 +54,7 @@ BuildRequires: qt5-qtdeclarative-static
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
-BuildRequires: clucene09-core-devel >= 0.9.21b-11
+BuildRequires: clucene09-core-devel >= 0.9.21b-12
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
@@ -423,6 +423,12 @@ fi
 
 
 %changelog
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.beta
+- disable bootstrap (reenable -doc)
+- system-clucene patch: drop -fpermissive flag
+- system-clucene patch: use toLocal8Bit instead of toStdString
+- system_clucene: BR clucene09-core-devel >= 0.9.21b-12 (-11 was broken)
+
 * Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.beta
 - libQt5Designer should be in a subpackage (#1156685)
 - -doc: disable(boostrap for new clucene), drop dep on main pkg
