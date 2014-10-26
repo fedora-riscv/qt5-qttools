@@ -1,6 +1,6 @@
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/fulltextsearch.pri qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/fulltextsearch.pri
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/fulltextsearch.pri	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/fulltextsearch.pri	2014-10-26 03:14:22.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/fulltextsearch.pri	2014-10-27 00:09:28.000000000 +0100
 @@ -1,125 +1,7 @@
 -DEFINES += _BUILD_FOR_QT_ LUCENE_DISABLE_MEMTRACKING
 -win32:DEFINES += _CRT_SECURE_NO_DEPRECATE _MT
@@ -132,7 +132,7 @@ diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/fulltextsearch.pri q
  HEADERS += qclucene_global_p.h \
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene-config_p.h qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene-config_p.h
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene-config_p.h	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene-config_p.h	2014-10-26 03:13:07.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene-config_p.h	2014-10-27 00:09:28.000000000 +0100
 @@ -15,6 +15,8 @@
  **
  ****************************************************************************/
@@ -144,7 +144,7 @@ diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene-config_p.h 
  
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene_global_p.h qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene_global_p.h
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene_global_p.h	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-10-26 03:13:07.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qclucene_global_p.h	2014-10-27 00:09:28.000000000 +0100
 @@ -29,20 +29,10 @@
  // We mean it.
  //
@@ -222,7 +222,7 @@ diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qclucene_global_p.h 
      {
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qindexreader.cpp qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexreader.cpp
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/qindexreader.cpp	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexreader.cpp	2014-10-26 03:15:25.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexreader.cpp	2014-10-27 00:09:28.000000000 +0100
 @@ -59,13 +59,13 @@
  {
      using namespace lucene::index;
@@ -289,19 +289,33 @@ diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qindexreader.cpp qtt
  
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qindexwriter.cpp qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexwriter.cpp
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/qindexwriter.cpp	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexwriter.cpp	2014-10-26 03:15:43.000000000 +0100
-@@ -50,7 +50,7 @@
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qindexwriter.cpp	2014-10-27 00:10:06.000000000 +0100
+@@ -18,6 +18,8 @@
+ #include "qindexwriter_p.h"
+ #include "qindexreader_p.h"
+ 
++#include <QtCore/QDir>
++
+ #include <CLucene.h>
+ #include <CLucene/index/IndexWriter.h>
+ 
+@@ -50,7 +52,12 @@
      : d(new QCLuceneIndexWriterPrivate())
      , analyzer(analyzer)
  {
 -    d->writer = new lucene::index::IndexWriter(path,
++    // The system CLucene cannot create directories recursively, so do it here.
++    // Ignore failure: If it failed, we will get an error from CLucene anyway.
++    if (create)
++        QDir::current().mkpath(path);
++
 +    d->writer = new lucene::index::IndexWriter(path.toLocal8Bit().constData(),
          analyzer.d->analyzer, create, closeDir);
  }
  
 diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qsearchable.cpp qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qsearchable.cpp
 --- qttools-opensource-src-5.3.2/src/assistant/clucene/qsearchable.cpp	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qsearchable.cpp	2014-10-26 03:16:03.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/clucene/qsearchable.cpp	2014-10-27 00:09:28.000000000 +0100
 @@ -95,7 +95,7 @@
      : QCLuceneSearcher()
  {
@@ -313,7 +327,7 @@ diff -ur qttools-opensource-src-5.3.2/src/assistant/clucene/qsearchable.cpp qtto
      reader.d->deleteCLuceneIndexReader = false;
 diff -ur qttools-opensource-src-5.3.2/src/assistant/help/help.pro qttools-opensource-src-5.3.2-system-clucene/src/assistant/help/help.pro
 --- qttools-opensource-src-5.3.2/src/assistant/help/help.pro	2014-09-11 12:48:25.000000000 +0200
-+++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/help/help.pro	2014-10-26 03:13:07.000000000 +0100
++++ qttools-opensource-src-5.3.2-system-clucene/src/assistant/help/help.pro	2014-10-27 00:09:28.000000000 +0100
 @@ -34,6 +34,7 @@
      qhelp_global.cpp
  

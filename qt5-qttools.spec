@@ -19,7 +19,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.4.%{pre}%{?dist}
+Release: 0.5.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -423,6 +423,9 @@ fi
 
 
 %changelog
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.5.beta
+- system-clucene patch: create path recursively in QtCLucene, CLucene can't
+
 * Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.beta
 - disable bootstrap (reenable -doc)
 - system-clucene patch: drop -fpermissive flag
