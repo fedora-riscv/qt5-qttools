@@ -19,7 +19,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.8.%{pre}%{?dist}
+Release: 0.9.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -206,7 +206,7 @@ install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer-128.png %{buildroot
 # linguist icons
 for icon in src/linguist/linguist/images/icons/linguist-*-32.png ; do
   size=$(echo $(basename ${icon}) | cut -d- -f2)
-  install -p -m644 -D ${icon} %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/linguist.png
+  install -p -m644 -D ${icon} %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/linguist-qt5.png
 done
 
 # hardlink files to %{_bindir}, add -qt5 postfix to not conflict
@@ -426,6 +426,9 @@ fi
 
 
 %changelog
+* Sun Nov 30 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.9.rc
+- install Linguist icon as linguist-qt5.png, fixes file conflict (#1169127)
+
 * Fri Nov 28 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.8.rc
 - 5.4.0-rc
 
