@@ -1,6 +1,8 @@
 
 %global qt_module qttools
+%if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
+%endif
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
@@ -12,7 +14,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -23,7 +25,7 @@ Source0: http://download.qt-project.org/development_releases/qt/5.3/%{version}-%
 Source0: http://download.qt-project.org/official_releases/qt/5.3/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
-Patch1: qttools-opensource-src-5.3.0-system-clucene.patch
+Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -47,12 +49,7 @@ BuildRequires: qt5-qtdeclarative-static
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
-%if 0%{?fedora} || 0%{?rhel} > 6
-BuildRequires: clucene09-core-devel
-%else
-BuildConflicts: clucene-core-devel > 2
-BuildRequires: clucene-core-devel
-%endif
+BuildRequires: clucene09-core-devel >= 0.9.21b-12
 %endif
 
 %{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
@@ -358,6 +355,11 @@ fi
 
 
 %changelog
+* Thu Dec 04 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.3.2-4
+- system-clucene patch fixes: some required QDir::mkpath in QtCLucene, cleanups
+- F20+/EL7+: BR reference-counting-enabled clucene09 (#1128293)
+- disable system-clucene where refcounted clucene09 not available (#1128293)
+
 * Wed Dec 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-3
 - rebuild (clucene09)
 
