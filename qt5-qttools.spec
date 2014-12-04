@@ -1,18 +1,18 @@
 
 %global qt_module qttools
-%global system_clucene 1
+#global system_clucene 1
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
-%ifarch %{arm} %{ix86} x86_64
-%define docs 1
-%endif
+#ifarch %{arm} %{ix86} x86_64
+#define docs 1
+#endif
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.2
-Release: 3%{?dist}
+Release: 2%{?dist}.1
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -358,8 +358,8 @@ fi
 
 
 %changelog
-* Wed Dec 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-3
-- rebuild (clucene09)
+* Wed Dec 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2.1
+- bootstrap
 
 * Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
 - -devel: Requires: qt5-designer-plugin-webkit
