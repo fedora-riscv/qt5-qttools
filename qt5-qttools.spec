@@ -19,7 +19,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.9.%{pre}%{?dist}
+Release: 0.10.%{pre}%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -426,6 +426,9 @@ fi
 
 
 %changelog
+* Tue Dec 09 2014 Daniel Vrátil <dvratil@redhat.com> 5.4.0-0.10.rc
+- fix icon name in qdbusviewer-qt5.desktop
+
 * Sun Nov 30 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.9.rc
 - install Linguist icon as linguist-qt5.png, fixes file conflict (#1169127)
 
