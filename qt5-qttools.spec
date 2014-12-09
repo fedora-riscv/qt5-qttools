@@ -14,7 +14,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.2
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -355,6 +355,9 @@ fi
 
 
 %changelog
+* Tue Dec 09 2014 Daniel Vrátil <dvratil@redhat.com> 5.3.2-5
+- fix icon name in qdbusviewer-qt5.desktop
+
 * Thu Dec 04 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.3.2-4
 - system-clucene patch fixes: some required QDir::mkpath in QtCLucene, cleanups
 - F20+/EL7+: BR reference-counting-enabled clucene09 (#1128293)
