@@ -14,12 +14,10 @@
 %endif
 %endif
 
-%define pre rc
-
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 0.10.%{pre}%{?dist}
+Release: 1%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -426,6 +424,9 @@ fi
 
 
 %changelog
+* Wed Dec 10 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-1
+- 5.4.0 (final)
+
 * Tue Dec 09 2014 Daniel Vrátil <dvratil@redhat.com> 5.4.0-0.10.rc
 - fix icon name in qdbusviewer-qt5.desktop
 
