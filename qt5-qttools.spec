@@ -12,7 +12,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.3.2
-Release: 3%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -358,9 +358,6 @@ fi
 
 
 %changelog
-* Wed Dec 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-3
-- rebuild (clucene09)
-
 * Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
 - -devel: Requires: qt5-designer-plugin-webkit
 
