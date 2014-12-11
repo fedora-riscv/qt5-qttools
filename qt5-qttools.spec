@@ -1,5 +1,5 @@
 
-#global bootstrap 1
+%global bootstrap 1
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.0
-Release: 1%{?dist}
+Release: 0.3%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
