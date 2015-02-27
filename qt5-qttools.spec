@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -424,6 +424,9 @@ fi
 
 
 %changelog
+* Fri Feb 27 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.1-2
+- rebuild (gcc5)
+
 * Tue Feb 24 2015 Jan Grulich <jgrulich@redhat.com> 5.4.1-1
 - 5.4.1
 
