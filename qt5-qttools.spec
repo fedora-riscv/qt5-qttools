@@ -1,5 +1,5 @@
 
-#global bootstrap 1
+%global bootstrap 0
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -48,7 +48,7 @@ BuildRequires: cmake
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static
-BuildRequires: qt5-qtdeclarative-static
+BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
