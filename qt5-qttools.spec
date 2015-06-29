@@ -1,5 +1,6 @@
 
 %global bootstrap 0
+
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -14,19 +15,16 @@
 %endif
 %endif
 
+%define prerelease rc
+
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.4.2
-Release: 2%{?dist}
+Version: 5.5.0
+Release: 0.3.rc%{?dist}
 
-# See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
-License: LGPLv2 with exceptions or GPLv3 with exceptions
-Url: http://qt-project.org/
-%if 0%{?pre:1}
-Source0: http://download.qt-project.org/development_releases/qt/5.4/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
-%else
-Source0: http://download.qt-project.org/official_releases/qt/5.4/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
-%endif
+License: LGPLv3 or LGPLv2
+Url:     http://www.qt.io
+Source0: http://download.qt.io/development_releases/qt/5.5/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -47,7 +45,7 @@ BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
-BuildRequires: qt5-qtbase-static
+BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: qt5-qtwebkit-devel
 
@@ -159,7 +157,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n qttools-opensource-src-%{version}%{?pre:-%{pre}}
+%setup -q -n %{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}
 
 %if 0%{?system_clucene}
 %patch1 -p1 -b .system_clucene
@@ -167,7 +165,6 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
-
 
 %build
 mkdir %{_target_platform}
@@ -212,7 +209,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
   case "${i}" in
-   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator)
+   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt5
       ln -sv ${i} ${i}-qt5
       ;;
@@ -257,7 +254,7 @@ popd
 %{_qt5_bindir}/qtpaths
 
 %files common
-%doc LGPL_EXCEPTION.txt LICENSE.LGPL*
+%doc LICENSE.LGPL*
 
 %post   libs-clucene -p /sbin/ldconfig
 %postun libs-clucene -p /sbin/ldconfig
@@ -344,6 +341,7 @@ fi
 %{_bindir}/qhelpconverter*
 %{_bindir}/qhelpgenerator*
 %{_bindir}/qtdiag*
+%{_bindir}/qtplugininfo*
 %{_qt5_bindir}/designer*
 %{_qt5_bindir}/lconvert*
 %{_qt5_bindir}/linguist*
@@ -354,10 +352,12 @@ fi
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
 %{_qt5_bindir}/qhelpgenerator*
+%{_qt5_bindir}/qtplugininfo*
 %{_qt5_headerdir}/QtCLucene/
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
 %{_qt5_headerdir}/QtHelp/
+%{_qt5_headerdir}/QtUiPlugin
 # phrasebooks used by linguist
 %{_qt5_datadir}/phrasebooks/
 %{_qt5_libdir}/libQt5CLucene.prl
@@ -372,6 +372,7 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
 %{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
+%{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
@@ -424,8 +425,14 @@ fi
 
 
 %changelog
-* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.4.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+* Sat Jun 27 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.3.rc
+- Disable bootstrap
+
+* Thu Jun 25 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.2.rc
+- Update for official RC1 released packages
+
+* Mon Jun 15 2015 Daniel Vrátil <dvratil@redhat.com> - 5.5.0-0.1.rc
+- Qt 5.5.0 RC1
 
 * Wed Jun 03 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.2-1
 - 5.4.2
