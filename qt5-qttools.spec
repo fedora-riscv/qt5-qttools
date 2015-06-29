@@ -20,7 +20,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.5.0
-Release: 0.3.rc%{?dist}
+Release: 0.4.rc%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -425,6 +425,9 @@ fi
 
 
 %changelog
+* Mon Jun 29 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.4.rc
+- Second round of builds now with bootstrap enabled due new qttools
+
 * Sat Jun 27 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.3.rc
 - Disable bootstrap
 
