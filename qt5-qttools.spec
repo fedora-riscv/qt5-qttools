@@ -1,5 +1,5 @@
 
-#global bootstrap 1
+%global bootstrap 1
 
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
