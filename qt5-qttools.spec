@@ -390,7 +390,7 @@ fi
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
-%files -n qt5-qthelpgenerator
+%files -n qt5-qhelpgenerator
 %{_bindir}/qhelpgenerator*
 %{_qt5_bindir}/qhelpgenerator*
 
