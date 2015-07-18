@@ -405,6 +405,10 @@ touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
 
+%files -n qt5-qhelpgenerator
+%{_bindir}/qhelpgenerator*
+%{_qt5_bindir}/qhelpgenerator*
+
 %files devel
 %{_bindir}/designer*
 %{_bindir}/lconvert*
@@ -414,7 +418,6 @@ fi
 %{_bindir}/pixeltool*
 %{_bindir}/qcollectiongenerator*
 %{_bindir}/qhelpconverter*
-%{_bindir}/qhelpgenerator*
 %{_bindir}/qtdiag*
 %{_qt5_bindir}/designer*
 %{_qt5_bindir}/lconvert*
@@ -425,7 +428,6 @@ fi
 %{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
-%{_qt5_bindir}/qhelpgenerator*
 %{_qt5_headerdir}/QtCLucene/
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
