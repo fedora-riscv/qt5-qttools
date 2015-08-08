@@ -20,7 +20,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.5.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -141,10 +141,10 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %{summary}.
 
 %package -n qt5-linguist
-Summary: Add translations to Qt5 applications
+Summary: Qt5 Linguist Tools
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-linguist
-%{summary}.
+Tools to add translations to Qt5 applications.
 
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
@@ -371,6 +371,17 @@ fi
 %{_qt5_datadir}/phrasebooks/
 %{_datadir}/applications/*linguist.desktop
 %{_datadir}/icons/hicolor/*/apps/linguist*.*
+# linguist friends
+%{_bindir}/lconvert*
+%{_bindir}/lrelease*
+%{_bindir}/lupdate*
+%{_qt5_bindir}/lconvert*
+%{_qt5_bindir}/lrelease*
+%{_qt5_bindir}/lupdate*
+# cmake config
+%dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
 
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -395,17 +406,11 @@ fi
 %{_qt5_bindir}/qhelpgenerator*
 
 %files devel
-%{_bindir}/lconvert*
-%{_bindir}/lrelease*
-%{_bindir}/lupdate*
 %{_bindir}/pixeltool*
 %{_bindir}/qcollectiongenerator*
 %{_bindir}/qhelpconverter*
 %{_bindir}/qtdiag*
 %{_bindir}/qtplugininfo*
-%{_qt5_bindir}/lconvert*
-%{_qt5_bindir}/lrelease*
-%{_qt5_bindir}/lupdate*
 %{_qt5_bindir}/pixeltool*
 %{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
@@ -425,9 +430,6 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
-%dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
-%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
-%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
@@ -464,6 +466,9 @@ fi
 
 
 %changelog
+* Sat Aug 08 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-4
+- qt5-linguist: move lconvert,lrelease,lupdate, cmake Qt5LinguistTools  here
+
 * Wed Jul 29 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-3
 - de-bootstrap
 
