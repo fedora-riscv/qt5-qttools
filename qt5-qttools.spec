@@ -141,17 +141,10 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %{summary}.
 
 %package -n qt5-linguist
-<<<<<<< HEAD
-Summary: Add translations to Qt5 applications
-Requires: %{name}-common = %{version}-%{release}
-%description -n qt5-linguist
-%{summary}.
-=======
 Summary: Qt5 Linguist Tools
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-linguist
 Tools to add translations to Qt5 applications.
->>>>>>> master
 
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
