@@ -141,17 +141,10 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %{summary}.
 
 %package -n qt5-linguist
-<<<<<<< HEAD
-Summary: Add translations to Qt5 applications
-Requires: %{name}-common = %{version}-%{release}
-%description -n qt5-linguist
-%{summary}.
-=======
 Summary: Qt5 Linguist Tools
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-linguist
 Tools to add translations to Qt5 applications.
->>>>>>> master
 
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
@@ -192,7 +185,6 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
-
 
 
 %build
@@ -360,29 +352,6 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
 
 %post -n qt5-linguist
-<<<<<<< HEAD
-touch --no-create %{_datadir}/icons/hicolor ||:
-
-%posttrans -n qt5-linguist
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-
-%postun -n qt5-linguist
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor ||:
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-fi
-
-%files -n qt5-linguist
-%{_bindir}/linguist*
-%{_qt5_bindir}/linguist*
-# phrasebooks used by linguist
-%{_qt5_datadir}/phrasebooks/
-%{_datadir}/applications/*linguist.desktop
-%{_datadir}/icons/hicolor/*/apps/linguist*.*
-
-%post -n qt5-qdbusviewer
-=======
->>>>>>> master
 touch --no-create %{_datadir}/icons/hicolor ||:
 
 %posttrans -n qt5-linguist
@@ -426,15 +395,12 @@ touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
 
-<<<<<<< HEAD
-=======
 %files -n qt5-qdbusviewer
 %{_bindir}/qdbusviewer*
 %{_qt5_bindir}/qdbusviewer*
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
->>>>>>> master
 %files -n qt5-qhelpgenerator
 %{_bindir}/qhelpgenerator*
 %{_qt5_bindir}/qhelpgenerator*
@@ -449,10 +415,7 @@ fi
 %{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
-<<<<<<< HEAD
-=======
 %{_qt5_bindir}/qtplugininfo*
->>>>>>> master
 %{_qt5_headerdir}/QtCLucene/
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
