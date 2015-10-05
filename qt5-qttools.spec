@@ -15,12 +15,12 @@
 %endif
 %endif
 
-#define prerelease rc
+%define prerelease rc1
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.5.0
-Release: 4%{?dist}
+Version: 5.5.1
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -466,6 +466,9 @@ fi
 
 
 %changelog
+* Tue Sep 29 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-1
+- Update to Qt 5.5.1 RC1
+
 * Sat Aug 08 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-4
 - qt5-linguist: move lconvert,lrelease,lupdate, cmake Qt5LinguistTools  here
 
