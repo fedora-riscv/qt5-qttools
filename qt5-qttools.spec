@@ -15,7 +15,7 @@
 %endif
 %endif
 
-%define prerelease rc1
+## define prerelease rc1
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
