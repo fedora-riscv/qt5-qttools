@@ -1,5 +1,5 @@
 
-%global bootstrap 1
+#global bootstrap 1
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.4.2
-Release: 2%{?dist}
+Release: 1%{?dist}
 
 # See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
 License: LGPLv2 with exceptions or GPLv3 with exceptions
@@ -56,8 +56,7 @@ BuildRequires: clucene09-core-devel >= 0.9.21b-12
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
-
-%{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
+%{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
 
 # when -libs were split out, for multilib upgrade path
 Obsoletes: qt5-tools < 5.4.0-0.2
@@ -79,9 +78,8 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
-Requires: qt5-qhelpgenerator = %{version}-%{release}
-Requires: qt5-designer = %{version}-%{release}
-Requires: qt5-linguist = %{version}-%{release}
+Provides: qt5-designer = %{version}-%{release}
+Provides: qt5-linguist = %{version}-%{release}
 %description devel
 %{summary}.
 
@@ -129,43 +127,25 @@ Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-assistant
 %{summary}.
 
-%package -n qt5-designer
-Summary: Design GUIs for Qt5 applications
-Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
-Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
-%description -n qt5-designer
-%{summary}.
-
 %package -n qt5-designer-plugin-webkit
 Summary: Qt5 designer plugin for WebKit
 Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %description -n qt5-designer-plugin-webkit
 %{summary}.
 
-%package -n qt5-linguist
-Summary: Add translations to Qt5 applications
-Requires: %{name}-common = %{version}-%{release}
-%description -n qt5-linguist
-%{summary}.
-
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
 Requires: %{name}-common = %{version}-%{release}
-%{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
+%{?_qt5_version:Requires: qt5-qtbase%{?_isa} >= %{_qt5_version}}
 %description -n qt5-qdbusviewer
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
-%package -n qt5-qhelpgenerator
-Summary: Qt5 Help generator tool
-Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
-%{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
-%description -n qt5-qhelpgenerator
-
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
-BuildRequires: qt5-qhelpgenerator
+# for qhelpgenerator
+BuildRequires: qt5-qttools-devel
 BuildArch: noarch
 %description doc
 %{summary}.
@@ -187,7 +167,6 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
-
 
 
 %build
@@ -319,60 +298,9 @@ fi
 %{_datadir}/applications/*assistant.desktop
 %{_datadir}/icons/hicolor/*/apps/assistant*.*
 
-%post -n qt5-designer
-touch --no-create %{_datadir}/icons/hicolor ||:
-
-%posttrans -n qt5-designer
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-update-desktop-database -q &> /dev/null ||:
-
-%postun -n qt5-designer
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor ||:
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-fi
-
-%files -n qt5-designer
-%{_bindir}/designer*
-%{_qt5_bindir}/designer*
-%{_datadir}/applications/*designer.desktop
-%{_datadir}/icons/hicolor/*/apps/designer*.*
-# example designer plugins
-%{_qt5_plugindir}/designer/libcontainerextension.so
-%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
-%{_qt5_plugindir}/designer/libtaskmenuextension.so
-%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
-%{_qt5_plugindir}/designer/libqquickwidget.so
-%dir %{_qt5_libdir}/cmake/Qt5Designer/
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
-
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
-
-%post -n qt5-linguist
-touch --no-create %{_datadir}/icons/hicolor ||:
-
-%posttrans -n qt5-linguist
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-
-%postun -n qt5-linguist
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor ||:
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-fi
-
-%files -n qt5-linguist
-%{_bindir}/linguist*
-%{_qt5_bindir}/linguist*
-# phrasebooks used by linguist
-%{_qt5_datadir}/phrasebooks/
-%{_datadir}/applications/*linguist.desktop
-%{_datadir}/icons/hicolor/*/apps/linguist*.*
 
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -449,6 +377,23 @@ fi
 %{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
 %{_qt5_archdatadir}/mkspecs/modules/*.pri
+%{_datadir}/applications/*designer.desktop
+%{_datadir}/applications/*linguist.desktop
+%{_datadir}/icons/hicolor/*/apps/designer*.*
+%{_datadir}/icons/hicolor/*/apps/linguist*.*
+
+# example designer plugins
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
+%{_qt5_plugindir}/designer/libqquickwidget.so
+%dir %{_qt5_libdir}/cmake/Qt5Designer/
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -479,9 +424,6 @@ fi
 
 
 %changelog
-* Sat Jul 18 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-2
-- qt5-designer, qt5-linguist, qt5-qhelpgenerator subpkgs
-
 * Wed Jun 03 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.2-1
 - 5.4.2
 
