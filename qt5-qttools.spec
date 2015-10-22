@@ -1,5 +1,6 @@
 
 #global bootstrap 1
+
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -14,25 +15,22 @@
 %endif
 %endif
 
+## define prerelease rc1
+
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.4.2
-Release: 3%{?dist}
+Version: 5.5.1
+Release: 2%{?dist}
 
-# See LGPL_EXCEPTIONS.txt, LICENSE.GPL3, respectively, for exception details
-License: LGPLv2 with exceptions or GPLv3 with exceptions
-Url: http://qt-project.org/
-%if 0%{?pre:1}
-Source0: http://download.qt-project.org/development_releases/qt/5.4/%{version}-%{pre}/submodules/%{qt_module}-opensource-src-%{version}-%{pre}.tar.xz
-%else
-Source0: http://download.qt-project.org/official_releases/qt/5.4/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
-%endif
+License: LGPLv3 or LGPLv2
+Url:     http://www.qt.io
+Source0: http://download.qt.io/official_releases/qt/5.5/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
-Patch2: qttools-opensource-src-5.2.0-qmake-qt5.patch
+Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
 
 ## upstream patches
 
@@ -47,8 +45,8 @@ BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
-BuildRequires: qt5-qtbase-static
-BuildRequires: qt5-qtdeclarative-static
+BuildRequires: qt5-qtbase-static >= %{version}
+BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
@@ -143,10 +141,10 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %{summary}.
 
 %package -n qt5-linguist
-Summary: Add translations to Qt5 applications
+Summary: Qt5 Linguist Tools
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-linguist
-%{summary}.
+Tools to add translations to Qt5 applications.
 
 %package -n qt5-qdbusviewer
 Summary: D-Bus debugger and viewer
@@ -179,7 +177,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n qttools-opensource-src-%{version}%{?pre:-%{pre}}
+%setup -q -n %{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}
 
 %if 0%{?system_clucene}
 %patch1 -p1 -b .system_clucene
@@ -187,7 +185,6 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
-
 
 
 %build
@@ -233,7 +230,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
   case "${i}" in
-   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator)
+   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt5
       ln -sv ${i} ${i}-qt5
       ;;
@@ -278,7 +275,7 @@ popd
 %{_qt5_bindir}/qtpaths
 
 %files common
-%doc LGPL_EXCEPTION.txt LICENSE.LGPL*
+%doc LICENSE.LGPL*
 
 %post   libs-clucene -p /sbin/ldconfig
 %postun libs-clucene -p /sbin/ldconfig
@@ -359,6 +356,7 @@ touch --no-create %{_datadir}/icons/hicolor ||:
 
 %posttrans -n qt5-linguist
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
+update-desktop-database -q &> /dev/null ||:
 
 %postun -n qt5-linguist
 if [ $1 -eq 0 ] ; then
@@ -373,6 +371,17 @@ fi
 %{_qt5_datadir}/phrasebooks/
 %{_datadir}/applications/*linguist.desktop
 %{_datadir}/icons/hicolor/*/apps/linguist*.*
+# linguist friends
+%{_bindir}/lconvert*
+%{_bindir}/lrelease*
+%{_bindir}/lupdate*
+%{_qt5_bindir}/lconvert*
+%{_qt5_bindir}/lrelease*
+%{_qt5_bindir}/lupdate*
+# cmake config
+%dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
+%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
 
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -392,48 +401,26 @@ fi
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
-%post devel
-touch --no-create %{_datadir}/icons/hicolor ||:
-
-%posttrans devel
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-update-desktop-database -q &> /dev/null ||:
-
-%postun devel
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor ||:
-gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
-fi
-
 %files -n qt5-qhelpgenerator
 %{_bindir}/qhelpgenerator*
 %{_qt5_bindir}/qhelpgenerator*
 
 %files devel
-%{_bindir}/designer*
-%{_bindir}/lconvert*
-%{_bindir}/linguist*
-%{_bindir}/lrelease*
-%{_bindir}/lupdate*
 %{_bindir}/pixeltool*
 %{_bindir}/qcollectiongenerator*
 %{_bindir}/qhelpconverter*
 %{_bindir}/qtdiag*
-%{_qt5_bindir}/designer*
-%{_qt5_bindir}/lconvert*
-%{_qt5_bindir}/linguist*
-%{_qt5_bindir}/lrelease*
-%{_qt5_bindir}/lupdate*
+%{_bindir}/qtplugininfo*
 %{_qt5_bindir}/pixeltool*
 %{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
+%{_qt5_bindir}/qtplugininfo*
 %{_qt5_headerdir}/QtCLucene/
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
 %{_qt5_headerdir}/QtHelp/
-# phrasebooks used by linguist
-%{_qt5_datadir}/phrasebooks/
+%{_qt5_headerdir}/QtUiPlugin
 %{_qt5_libdir}/libQt5CLucene.prl
 %{_qt5_libdir}/libQt5CLucene.so
 %{_qt5_libdir}/libQt5Designer*.prl
@@ -443,9 +430,7 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
-%dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
-%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
-%{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
+%{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
@@ -481,11 +466,35 @@ fi
 
 
 %changelog
-* Sat Jul 18 2015 Rex Dieter <rdieter@fedoraproject.org> 5.4.2-3
+* Thu Oct 15 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-2
+- Update to final release 5.5.1
+
+* Tue Sep 29 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-1
+- Update to Qt 5.5.1 RC1
+
+* Sat Aug 08 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-4
+- qt5-linguist: move lconvert,lrelease,lupdate, cmake Qt5LinguistTools  here
+
+* Wed Jul 29 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-3
 - de-bootstrap
 
-* Sat Jul 18 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.4.2-2
+* Thu Jul 16 2015 Rex Dieter <rdieter@fedoraproject.org> 5.5.0-2
 - qt5-designer, qt5-linguist, qt5-qhelpgenerator subpkgs
+
+* Wed Jul 1 2015 Helio Chissini de Castro <helio@kde.org> 5.5.0-1
+- New final upstream release Qt 5.5.0
+
+* Mon Jun 29 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.4.rc
+- Second round of builds now with bootstrap enabled due new qttools
+
+* Sat Jun 27 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.3.rc
+- Disable bootstrap
+
+* Thu Jun 25 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.0-0.2.rc
+- Update for official RC1 released packages
+
+* Mon Jun 15 2015 Daniel Vrátil <dvratil@redhat.com> - 5.5.0-0.1.rc
+- Qt 5.5.0 RC1
 
 * Wed Jun 03 2015 Jan Grulich <jgrulich@redhat.com> - 5.4.2-1
 - 5.4.2
