@@ -347,17 +347,17 @@ fi
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
 # example designer plugins
-%{_qt5_plugindir}/designer/libcontainerextension.so
-%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+#{_qt5_plugindir}/designer/libcontainerextension.so
+#{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libqquickwidget.so
-%{_qt5_plugindir}/designer/libtaskmenuextension.so
-%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
+#{_qt5_plugindir}/designer/libtaskmenuextension.so
+#{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
+#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
+#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
+#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
+#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
