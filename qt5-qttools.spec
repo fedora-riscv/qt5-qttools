@@ -347,9 +347,17 @@ fi
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
 # example designer plugins
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libqquickwidget.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
@@ -441,9 +449,9 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
-%{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
+#{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
-%{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
+#{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
 %{_qt5_archdatadir}/mkspecs/modules/*.pri
 
@@ -469,10 +477,8 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
-%if 0
 %files examples
 %{_qt5_examplesdir}/
-%endif
 
 
 %changelog
