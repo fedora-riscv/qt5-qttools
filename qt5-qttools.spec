@@ -1,5 +1,5 @@
 
-#global bootstrap 1
+%global bootstrap 1
 
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
@@ -15,12 +15,12 @@
 %endif
 %endif
 
-## define prerelease rc1
+%define prerelease beta1
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.5.1
-Release: 2%{?dist}
+Version: 5.6.0
+Release: 0.1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -47,7 +47,10 @@ BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
+## optional (and deprecated), include in bootstrapping only for now
+%if ! 0%{?bootstrap}
 BuildRequires: qt5-qtwebkit-devel
+%endif
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -466,6 +469,9 @@ fi
 
 
 %changelog
+* Tue Nov 03 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.1
+- Start to implement 5.6.0 beta, bootstrapped
+
 * Thu Oct 15 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-2
 - Update to final release 5.5.1
 
