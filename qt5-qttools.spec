@@ -49,7 +49,8 @@ BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
-BuildRequires: qt5-qtwebkit-devel
+BuildRequires: pkgconfig(Qt5WebKit)
+%global webkit 1
 %endif
 
 %if 0%{?system_clucene}
@@ -80,6 +81,7 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
+Requires: qt5-qdoc = %{version}-%{release}
 Requires: qt5-qhelpgenerator = %{version}-%{release}
 Requires: qt5-designer = %{version}-%{release}
 Requires: qt5-linguist = %{version}-%{release}
@@ -157,6 +159,12 @@ Requires: %{name}-common = %{version}-%{release}
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
+%package -n qt5-qdoc
+Summary: Qt5 documentation generator
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description -n qt5-qdoc
+%{summary}.
+
 %package -n qt5-qhelpgenerator
 Summary: Qt5 Help generator tool
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
@@ -166,6 +174,7 @@ Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
+BuildRequires: qt5-qdoc
 BuildRequires: qt5-qhelpgenerator
 BuildArch: noarch
 %description doc
@@ -338,21 +347,15 @@ fi
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
 # example designer plugins
-%{_qt5_plugindir}/designer/libcontainerextension.so
-%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
-%{_qt5_plugindir}/designer/libtaskmenuextension.so
-%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %{_qt5_plugindir}/designer/libqquickwidget.so
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
+%if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
+%endif
 
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -403,6 +406,10 @@ fi
 %{_qt5_bindir}/qdbusviewer*
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
+
+%files -n qt5-qdoc
+%{_bindir}/qdoc*
+%{_qt5_bindir}/qdoc*
 
 %files -n qt5-qhelpgenerator
 %{_bindir}/qhelpgenerator*
@@ -462,7 +469,7 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
-%if 0%{?_qt5_examplesdir:1}
+%if 0
 %files examples
 %{_qt5_examplesdir}/
 %endif
