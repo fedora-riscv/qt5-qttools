@@ -477,8 +477,10 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
+%if 0
 %files examples
 %{_qt5_examplesdir}/
+%endif
 
 
 %changelog
