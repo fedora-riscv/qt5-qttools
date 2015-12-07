@@ -1,5 +1,5 @@
 
-%global bootstrap 1
+#global bootstrap 1
 
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
@@ -20,7 +20,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -484,6 +484,9 @@ fi
 
 
 %changelog
+* Sun Dec 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.2
+- de-bootstrap
+
 * Tue Nov 03 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.1
 - Start to implement 5.6.0 beta, bootstrapped
 
