@@ -205,8 +205,8 @@ pushd %{_target_platform}
 %{qmake_qt5} ..
 
 # examples seem to get skipped (sometimes?), try this as a possible workaround for race-condition -- rex
-make qmake_all
-make %{?_smp_mflags}
+make
+#make %{?_smp_mflags}
 
 %if 0%{?docs}
 make %{?_smp_mflags} docs
