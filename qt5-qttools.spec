@@ -469,6 +469,8 @@ fi
 %{_qt5_docdir}/qtassistant/
 %{_qt5_docdir}/qtdesigner.qch
 %{_qt5_docdir}/qtdesigner/
+%{_qt5_docdir}/qtdoc.qch
+%{_qt5_docdir}/qtdoc/
 %{_qt5_docdir}/qthelp.qch
 %{_qt5_docdir}/qthelp/
 %{_qt5_docdir}/qtlinguist.qch
