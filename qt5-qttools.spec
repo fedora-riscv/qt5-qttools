@@ -204,6 +204,8 @@ mkdir %{_target_platform}
 pushd %{_target_platform}
 %{qmake_qt5} ..
 
+# examples seem to get skipped (sometimes?), try this as a possible workaround for race-condition -- rex
+make qmake_all
 make %{?_smp_mflags}
 
 %if 0%{?docs}
@@ -346,18 +348,18 @@ fi
 %{_qt5_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
-# example designer plugins
-#{_qt5_plugindir}/designer/libcontainerextension.so
-#{_qt5_plugindir}/designer/libcustomwidgetplugin.so
-%{_qt5_plugindir}/designer/libqquickwidget.so
-#{_qt5_plugindir}/designer/libtaskmenuextension.so
-#{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
-#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
-#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
+%{_qt5_plugindir}/designer/libqquickwidget.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
-#{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
+# example designer plugins
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
@@ -469,8 +471,8 @@ fi
 %{_qt5_docdir}/qtassistant/
 %{_qt5_docdir}/qtdesigner.qch
 %{_qt5_docdir}/qtdesigner/
-%{_qt5_docdir}/qtdoc.qch
-%{_qt5_docdir}/qtdoc/
+%{_qt5_docdir}/qdoc.qch
+%{_qt5_docdir}/qdoc/
 %{_qt5_docdir}/qthelp.qch
 %{_qt5_docdir}/qthelp/
 %{_qt5_docdir}/qtlinguist.qch
@@ -479,10 +481,8 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
-%if 0
 %files examples
 %{_qt5_examplesdir}/
-%endif
 
 
 %changelog
