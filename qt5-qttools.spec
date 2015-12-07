@@ -15,6 +15,10 @@
 %endif
 %endif
 
+# package examples or not, seems recent rawhide builds aren't including these
+# reliably, not sure why (yet) --rex
+#define examples 1
+
 %define prerelease beta1
 
 Summary: Qt5 - QtTool components
@@ -204,9 +208,7 @@ mkdir %{_target_platform}
 pushd %{_target_platform}
 %{qmake_qt5} ..
 
-# examples seem to get skipped (sometimes?), try this as a possible workaround for race-condition -- rex
-make
-#make %{?_smp_mflags}
+make %{?_smp_mflags}
 
 %if 0%{?docs}
 make %{?_smp_mflags} docs
@@ -352,6 +354,7 @@ fi
 %{_qt5_plugindir}/designer/libqquickwidget.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
 # example designer plugins
+%if 0%{?examples}
 %{_qt5_plugindir}/designer/libcontainerextension.so
 %{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
@@ -360,6 +363,7 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
+%endif
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
@@ -481,8 +485,10 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
+%if 0%{?examples}
 %files examples
 %{_qt5_examplesdir}/
+%endif
 
 
 %changelog
