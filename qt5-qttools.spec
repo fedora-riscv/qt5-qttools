@@ -15,16 +15,12 @@
 %endif
 %endif
 
-# package examples or not, seems recent rawhide builds aren't including these
-# reliably, not sure why (yet) --rex
-#define examples 1
-
-%define prerelease beta1
+%define prerelease beta2
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -353,8 +349,6 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
 %{_qt5_plugindir}/designer/libqquickwidget.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-# example designer plugins
-%if 0%{?examples}
 %{_qt5_plugindir}/designer/libcontainerextension.so
 %{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
@@ -363,7 +357,6 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
-%endif
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
@@ -485,13 +478,15 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
-%if 0%{?examples}
 %files examples
 %{_qt5_examplesdir}/
-%endif
 
 
 %changelog
+* Tue Dec 08 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-3
+- Reenable examples. Some interfaces marked as examples are needed from phonon
+- Update to second beta snapshot
+
 * Sun Dec 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.2
 - de-bootstrap
 
