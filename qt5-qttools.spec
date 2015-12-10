@@ -154,12 +154,6 @@ Requires: %{name}-common = %{version}-%{release}
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
-%package -n qt5-qdoc
-Summary: Qt5 documentation generator
-Requires: %{name}%{?_isa} = %{version}-%{release}
-%description -n qt5-qdoc
-%{summary}.
-
 %package -n qt5-qhelpgenerator
 Summary: Qt5 Help generator tool
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
