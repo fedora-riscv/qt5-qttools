@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.2%{?dist}
+Release: 0.4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -40,9 +40,13 @@ BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-BuildRequires: pkgconfig(Qt5WebKit)
 BuildRequires: qt5-qdoc
 BuildRequires: qt5-qhelpgenerator
+## optional (and deprecated), include in bootstrapping only for now
+%if ! 0%{?bootstrap}
+BuildRequires: pkgconfig(Qt5WebKit)
+%global webkit 1
+%endif
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -72,6 +76,7 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
+Requires: qt5-qdoc = %{version}-%{release}
 Requires: qt5-qhelpgenerator = %{version}-%{release}
 Requires: qt5-designer = %{version}-%{release}
 Requires: qt5-linguist = %{version}-%{release}
@@ -149,6 +154,12 @@ Requires: %{name}-common = %{version}-%{release}
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
+%package -n qt5-qdoc
+Summary: Qt5 documentation generator
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description -n qt5-qdoc
+%{summary}.
+
 %package -n qt5-qhelpgenerator
 Summary: Qt5 Help generator tool
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
@@ -164,6 +175,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
+BuildRequires: qt5-qdoc
 BuildRequires: qt5-qhelpgenerator
 BuildArch: noarch
 Conflicts: qt5-qtbase-doc < 5.6.0
@@ -337,18 +349,23 @@ fi
 %{_qt5_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
-# example designer plugins
-%{_qt5_plugindir}/designer/libqquickwidget.so
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
+%{_qt5_plugindir}/designer/libqquickwidget.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
+%{_qt5_plugindir}/designer/libcontainerextension.so
+%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
+%{_qt5_plugindir}/designer/libtaskmenuextension.so
+%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
+%if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
+%endif
 
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -434,9 +451,9 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
-%{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
+#{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
-%{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
+#{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
 %{_qt5_archdatadir}/mkspecs/modules/*.pri
 
@@ -454,6 +471,8 @@ fi
 %{_qt5_docdir}/qtassistant/
 %{_qt5_docdir}/qtdesigner.qch
 %{_qt5_docdir}/qtdesigner/
+%{_qt5_docdir}/qdoc.qch
+%{_qt5_docdir}/qdoc/
 %{_qt5_docdir}/qthelp.qch
 %{_qt5_docdir}/qthelp/
 %{_qt5_docdir}/qtlinguist.qch
@@ -464,18 +483,23 @@ fi
 %{_qt5_docdir}/qdoc/
 %endif
 
-%if 0%{?_qt5_examplesdir:1}
 %files examples
 %{_qt5_examplesdir}/
-%endif
 
 
 %changelog
-* Thu Dec 10 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.2
+* Thu Dec 10 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.4
 - Official beta release
 
+* Tue Dec 08 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-3
+- Reenable examples. Some interfaces marked as examples are needed from phonon
+- Update to second beta snapshot
+
+* Sun Dec 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.2
+- de-bootstrap
+
 * Tue Nov 03 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.1
-- Start to implement 5.6.0 beta
+- Start to implement 5.6.0 beta, bootstrapped
 
 * Thu Oct 15 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-2
 - Update to final release 5.5.1
