@@ -6,14 +6,21 @@
 %global system_clucene 1
 %endif
 
+# define to build docs, need to undef this for bootstrapping
+# where qt5-qttools builds are not yet available
+# only primary archs (for now), allow secondary to bootstrap
+%if ! 0%{?bootstrap}
+%ifarch %{arm} %{ix86} x86_64
 %define docs 1
+%endif
+%endif
 
 %define prerelease beta
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.4%{?dist}
+Release: 0.5%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -40,8 +47,6 @@ BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-devel >= %{version}
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-BuildRequires: qt5-qdoc
-BuildRequires: qt5-qhelpgenerator
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
 BuildRequires: pkgconfig(Qt5WebKit)
@@ -161,7 +166,7 @@ Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 %description -n qt5-qhelpgenerator
 
 %package -n qt5-qdoc
-Summary: Qt5 documentation generator 
+Summary: Qt5 documentation generator
 Requires: %{name}%{?_isa} = %{version}-%{release}
 %description -n qt5-qdoc
 %{summary}.
@@ -482,6 +487,11 @@ fi
 
 
 %changelog
+* Fri Dec 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-0.5
+- (re)fix bootstrap macro
+- include qt5-qdoc/qt5-qhelpgenerator build dep deps in -doc subpkg only
+- fix whitespace
+
 * Thu Dec 10 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.4
 - Official beta release
 
