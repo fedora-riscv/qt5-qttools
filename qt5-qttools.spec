@@ -20,7 +20,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.5%{?dist}
+Release: 0.6%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -487,6 +487,9 @@ fi
 
 
 %changelog
+* Mon Dec 21 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.6
+- Update to final beta release
+
 * Fri Dec 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-0.5
 - (re)fix bootstrap macro
 - include qt5-qdoc/qt5-qhelpgenerator build dep deps in -doc subpkg only
