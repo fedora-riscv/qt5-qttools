@@ -20,11 +20,15 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.6%{?dist}
+Release: 0.7.%{prerelease}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/official_releases/qt/5.5/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.gz
+%if 0%{?prerelease:1}
+Source0: http://download.qt.io/development_releases/qt/5.6/%{version}-%{prerelease}/submodules/%{qt_module}-opensource-src-%{version}-%{prerelease}.tar.gz
+%else
+Source0: http://download.qt.io/official_releases/qt/5.6/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.gz
+%endif
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -289,7 +293,7 @@ popd
 %{_qt5_bindir}/qtpaths
 
 %files common
-%doc LICENSE.LGPL*
+%license LICENSE.LGPL*
 
 %post   libs-clucene -p /sbin/ldconfig
 %postun libs-clucene -p /sbin/ldconfig
@@ -487,6 +491,9 @@ fi
 
 
 %changelog
+* Mon Dec 28 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.7.beta
+- update source URL, use %%license
+
 * Mon Dec 21 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.6
 - Update to final beta release
 
