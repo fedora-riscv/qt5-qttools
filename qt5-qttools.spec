@@ -20,7 +20,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.7.%{prerelease}%{?dist}
+Release: 0.8.%{prerelease}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -35,6 +35,10 @@ Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
 Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
+
+# workaround https://bugreports.qt-project.org/browse/QTBUG-43057
+# 'make docs' crash on el6, use qSort instead of std::sort
+Patch3: qttools-opensource-src-5.6-QTBUG-43057.patch
 
 ## upstream patches
 
@@ -203,6 +207,7 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
+%patch3 -p1 -b .QTBUG-43057
 
 
 %build
@@ -491,6 +496,9 @@ fi
 
 
 %changelog
+* Sun Jan 17 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.8.beta
+- port QTBUG-43057 workaround
+
 * Mon Dec 28 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.7.beta
 - update source URL, use %%license
 
