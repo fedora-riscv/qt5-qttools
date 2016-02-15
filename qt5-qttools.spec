@@ -15,19 +15,19 @@
 %endif
 %endif
 
-%define prerelease beta
+%define prerelease rc
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.9.%{prerelease}%{?dist}
+Release: 0.10.%{prerelease}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
 %if 0%{?prerelease:1}
-Source0: http://download.qt.io/development_releases/qt/5.6/%{version}-%{prerelease}/submodules/%{qt_module}-opensource-src-%{version}-%{prerelease}.tar.gz
+Source0: http://download.qt.io/development_releases/qt/5.6/%{version}-%{prerelease}/submodules/%{qt_module}-opensource-src-%{version}-%{prerelease}.tar.xz
 %else
-Source0: http://download.qt.io/official_releases/qt/5.6/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.gz
+Source0: http://download.qt.io/official_releases/qt/5.6/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 %endif
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
@@ -496,17 +496,20 @@ fi
 
 
 %changelog
-* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.0-0.9.beta
+* Mon Feb 15 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.10
+- Update RC release
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.0-0.9.rc
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
-* Sun Jan 17 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.8.beta
+* Sun Jan 17 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.8.rc
 - port QTBUG-43057 workaround
 
-* Mon Dec 28 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.7.beta
+* Mon Dec 28 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.7.rc
 - update source URL, use %%license
 
 * Mon Dec 21 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.6
-- Update to final beta release
+- Update to final rc release
 
 * Fri Dec 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-0.5
 - (re)fix bootstrap macro
@@ -514,17 +517,17 @@ fi
 - fix whitespace
 
 * Thu Dec 10 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.4
-- Official beta release
+- Official rc release
 
 * Tue Dec 08 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-3
 - Reenable examples. Some interfaces marked as examples are needed from phonon
-- Update to second beta snapshot
+- Update to second rc snapshot
 
 * Sun Dec 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.2
 - de-bootstrap
 
 * Tue Nov 03 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.1
-- Start to implement 5.6.0 beta, bootstrapped
+- Start to implement 5.6.0 rc, bootstrapped
 
 * Thu Oct 15 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-2
 - Update to final release 5.5.1
@@ -583,30 +586,30 @@ fi
 * Fri Nov 28 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.8.rc
 - 5.4.0-rc
 
-* Mon Nov 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.7.beta
+* Mon Nov 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.7.rc
 - out-of-tree build, use %%qmake_qt5
 
-* Fri Oct 31 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.6.beta
+* Fri Oct 31 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.6.rc
 - respin system-clucene.patch
 
-* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.5.beta
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.5.rc
 - system-clucene patch: create path recursively in QtCLucene, CLucene can't
 
-* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.beta
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.rc
 - disable bootstrap (reenable -doc)
 - system-clucene patch: drop -fpermissive flag
 - system-clucene patch: use toLocal8Bit instead of toStdString
 - system_clucene: BR clucene09-core-devel >= 0.9.21b-12 (-11 was broken)
 
-* Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.beta
+* Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.rc
 - libQt5Designer should be in a subpackage (#1156685)
 - -doc: disable(boostrap for new clucene), drop dep on main pkg
 
-* Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.beta
+* Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.rc
 - BR and rebuild against reference-counting-enabled clucene09 (#1128293)
 
-* Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.beta
-- 5.4.0-beta
+* Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.rc
+- 5.4.0-rc
 
 * Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
 - -devel: Requires: qt5-designer-plugin-webkit
@@ -644,14 +647,14 @@ fi
 * Mon Dec 02 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.10.rc1
 - 5.2.0-rc1
 
-* Mon Nov 25 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.5.beta1
+* Mon Nov 25 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.5.rc1
 - enable -doc only on primary archs (allow secondary bootstrap)
 
-* Sat Nov 09 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.4.beta1
+* Sat Nov 09 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.4.rc1
 - rebuild (arm/qreal)
 
-* Thu Oct 24 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.3.beta1
-- 5.2.0-beta1
+* Thu Oct 24 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.3.rc1
+- 5.2.0-rc1
 
 * Wed Oct 16 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.2.alpha
 - bootstrap ppc
