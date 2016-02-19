@@ -277,7 +277,7 @@ done
 popd
 
 ## Qt5Designer.pc references non-existent Qt5UiPlugin.pc, remove the reference for now
-sed -i.Qt5UiPlugin -e 's|Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.pc
+sed -i -e 's| Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 
 
 ## work-in-progress... -- rex
@@ -494,8 +494,6 @@ fi
 %{_qt5_docdir}/qtlinguist/
 %{_qt5_docdir}/qtuitools.qch
 %{_qt5_docdir}/qtuitools/
-%{_qt5_docdir}/qdoc.qch
-%{_qt5_docdir}/qdoc/
 %endif
 
 %files examples
