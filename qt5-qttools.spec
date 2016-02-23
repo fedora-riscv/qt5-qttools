@@ -1,6 +1,3 @@
-
-#global bootstrap 1
-
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
@@ -9,10 +6,8 @@
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
-%if ! 0%{?bootstrap}
 %ifarch %{arm} %{ix86} x86_64
 %define docs 1
-%endif
 %endif
 
 %define prerelease rc
@@ -20,7 +15,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.10.%{prerelease}%{?dist}
+Release: 0.12.%{prerelease}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -51,15 +46,11 @@ Source23: qdbusviewer.desktop
 %if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
 %endif
-BuildRequires: desktop-file-utils
-BuildRequires: qt5-qtbase-devel >= %{version}
+BuildRequires: pkgconfig(Qt5) >= %{version}
+BuildRequires: pkgconfig(Qt5WebKit)
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-## optional (and deprecated), include in bootstrapping only for now
-%if ! 0%{?bootstrap}
-BuildRequires: pkgconfig(Qt5WebKit)
-%global webkit 1
-%endif
+BuildRequires: desktop-file-utils
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -369,11 +360,9 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
-%if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
-%endif
 
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -459,9 +448,7 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
-#{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
-#{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
 %{_qt5_archdatadir}/mkspecs/modules/*.pri
 
@@ -496,6 +483,12 @@ fi
 
 
 %changelog
+* Tue Feb 23 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.12.rc
+- Update to final RC
+
+* Fri Feb 19 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.11
+- QtWebKit is not optional if we do not want a broken QtCreator
+
 * Mon Feb 15 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.10
 - Update RC release
 
