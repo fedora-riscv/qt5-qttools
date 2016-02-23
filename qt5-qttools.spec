@@ -267,9 +267,16 @@ for prl_file in libQt5*.prl ; do
 done
 popd
 
+## Qt5Designer.pc references non-existent Qt5UiPlugin.pc, remove the reference for now
+sed -i -e 's| Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.pc
+
+
 ## work-in-progress... -- rex
 %if 0%{?fedora} || 0%{?rhel} > 6
 %check
+# verify validity of Qt5Designer.pc
+export PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig
+pkg-config --print-requires --print-requires-private Qt5Designer
 export CMAKE_PREFIX_PATH=%{buildroot}%{_qt5_prefix}:%{buildroot}%{_prefix}
 export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
 export LD_LIBRARY_PATH=%{buildroot}%{_qt5_libdir}
@@ -474,8 +481,6 @@ fi
 %{_qt5_docdir}/qtlinguist/
 %{_qt5_docdir}/qtuitools.qch
 %{_qt5_docdir}/qtuitools/
-%{_qt5_docdir}/qdoc.qch
-%{_qt5_docdir}/qdoc/
 %endif
 
 %files examples
@@ -486,8 +491,8 @@ fi
 * Tue Feb 23 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.12.rc
 - Update to final RC
 
-* Fri Feb 19 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.11
-- QtWebKit is not optional if we do not want a broken QtCreator
+* Fri Feb 19 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.11.rc
+- workaround Qt5Designer.pc reference to non-existent Qt5UiPlugin.pc
 
 * Mon Feb 15 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.10
 - Update RC release
