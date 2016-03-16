@@ -484,6 +484,9 @@ fi
 
 
 %changelog
+* Wed Mar 16 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-2
+- 5.6.0 final release
+
 * Mon Mar 14 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-1
 - 5.6.0 final release
 
