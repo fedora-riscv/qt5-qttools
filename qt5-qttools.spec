@@ -1,10 +1,9 @@
-
-#global bootstrap 1
-
 %global qt_module qttools
 %if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
 %endif
+
+%global bootstrap 1
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
@@ -15,22 +14,26 @@
 %endif
 %endif
 
-## define prerelease rc1
+#define prerelease
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.5.1
-Release: 2%{?dist}
+Version: 5.6.0
+Release: 0.2%{?prerelease:.%{prerelease}}%{?dist}.bootstrap
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/official_releases/qt/5.5/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
+Source0: http://download.qt.io/snapshots/qt/5.6/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
 Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
+
+# workaround https://bugreports.qt-project.org/browse/QTBUG-43057
+# 'make docs' crash on el6, use qSort instead of std::sort
+Patch3: qttools-opensource-src-5.6-QTBUG-43057.patch
 
 ## upstream patches
 
@@ -44,10 +47,14 @@ Source23: qdbusviewer.desktop
 BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
-BuildRequires: qt5-qtbase-devel >= %{version}
+BuildRequires: pkgconfig(Qt5) >= %{version}
+## optional (and deprecated), include in bootstrapping only for now
+%if ! 0%{?bootstrap}
+BuildRequires: pkgconfig(Qt5WebKit)
+%global webkit 1
+%endif
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-BuildRequires: qt5-qtwebkit-devel
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -77,6 +84,7 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
+Requires: qt5-qdoc = %{version}-%{release}
 Requires: qt5-qhelpgenerator = %{version}-%{release}
 Requires: qt5-designer = %{version}-%{release}
 Requires: qt5-linguist = %{version}-%{release}
@@ -160,11 +168,20 @@ Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 %{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
 %description -n qt5-qhelpgenerator
 
+%package -n qt5-qdoc
+Summary: Qt5 documentation generator
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description -n qt5-qdoc
+%{summary}.
+
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
+BuildRequires: qt5-qdoc
 BuildRequires: qt5-qhelpgenerator
 BuildArch: noarch
+Conflicts: qt5-qtbase-doc < 5.6.0
+
 %description doc
 %{summary}.
 %endif
@@ -185,6 +202,7 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
+%patch3 -p1 -b .QTBUG-43057
 
 
 %build
@@ -253,9 +271,16 @@ for prl_file in libQt5*.prl ; do
 done
 popd
 
+## Qt5Designer.pc references non-existent Qt5UiPlugin.pc, remove the reference for now
+sed -i -e 's| Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.pc
+
+
 ## work-in-progress... -- rex
 %if 0%{?fedora} || 0%{?rhel} > 6
 %check
+# verify validity of Qt5Designer.pc
+export PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig
+pkg-config --print-requires --print-requires-private Qt5Designer
 export CMAKE_PREFIX_PATH=%{buildroot}%{_qt5_prefix}:%{buildroot}%{_prefix}
 export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
 export LD_LIBRARY_PATH=%{buildroot}%{_qt5_libdir}
@@ -275,7 +300,7 @@ popd
 %{_qt5_bindir}/qtpaths
 
 %files common
-%doc LICENSE.LGPL*
+%license LICENSE.LGPL*
 
 %post   libs-clucene -p /sbin/ldconfig
 %postun libs-clucene -p /sbin/ldconfig
@@ -334,22 +359,23 @@ fi
 %{_qt5_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
-# example designer plugins
+%dir %{_qt5_libdir}/cmake/Qt5Designer/
+%{_qt5_plugindir}/designer/libqquickwidget.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
 %{_qt5_plugindir}/designer/libcontainerextension.so
 %{_qt5_plugindir}/designer/libcustomwidgetplugin.so
 %{_qt5_plugindir}/designer/libtaskmenuextension.so
 %{_qt5_plugindir}/designer/libworldtimeclockplugin.so
-%{_qt5_plugindir}/designer/libqquickwidget.so
-%dir %{_qt5_libdir}/cmake/Qt5Designer/
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
+%if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
+%endif
 
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
@@ -401,6 +427,10 @@ fi
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
+%files -n qt5-qdoc
+%{_bindir}/qdoc*
+%{_qt5_bindir}/qdoc*
+
 %files -n qt5-qhelpgenerator
 %{_bindir}/qhelpgenerator*
 %{_qt5_bindir}/qhelpgenerator*
@@ -431,9 +461,7 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
-%{_qt5_libdir}/pkgconfig/Qt5CLucene.pc
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
-%{_qt5_libdir}/pkgconfig/Qt5DesignerComponents.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
 %{_qt5_archdatadir}/mkspecs/modules/*.pri
 
@@ -446,11 +474,13 @@ fi
 
 %if 0%{?docs}
 %files doc
-%doc LICENSE.FDL
+%license LICENSE.FDL
 %{_qt5_docdir}/qtassistant.qch
 %{_qt5_docdir}/qtassistant/
 %{_qt5_docdir}/qtdesigner.qch
 %{_qt5_docdir}/qtdesigner/
+%{_qt5_docdir}/qdoc.qch
+%{_qt5_docdir}/qdoc/
 %{_qt5_docdir}/qthelp.qch
 %{_qt5_docdir}/qthelp/
 %{_qt5_docdir}/qtlinguist.qch
@@ -459,13 +489,59 @@ fi
 %{_qt5_docdir}/qtuitools/
 %endif
 
-%if 0%{?_qt5_examplesdir:1}
 %files examples
 %{_qt5_examplesdir}/
-%endif
 
 
 %changelog
+* Fri Mar 18 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-2
+- rebuild
+
+* Wed Mar 16 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-2
+- 5.6.0 final release
+
+* Mon Mar 14 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-1
+- 5.6.0 final release
+
+* Tue Feb 23 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.12.rc
+- Update to final RC
+
+* Fri Feb 19 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.11.rc
+- workaround Qt5Designer.pc reference to non-existent Qt5UiPlugin.pc
+
+* Mon Feb 15 2016 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.10
+- Update RC release
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.6.0-0.9.rc
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Sun Jan 17 2016 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.8.rc
+- port QTBUG-43057 workaround
+
+* Mon Dec 28 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.7.rc
+- update source URL, use %%license
+
+* Mon Dec 21 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.6
+- Update to final rc release
+
+* Fri Dec 11 2015 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-0.5
+- (re)fix bootstrap macro
+- include qt5-qdoc/qt5-qhelpgenerator build dep deps in -doc subpkg only
+- fix whitespace
+
+* Thu Dec 10 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.4
+- Official rc release
+
+* Tue Dec 08 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-3
+- Reenable examples. Some interfaces marked as examples are needed from phonon
+- Update to second rc snapshot
+
+* Sun Dec 06 2015 Rex Dieter <rdieter@fedoraproject.org> 5.6.0-0.2
+- de-bootstrap
+
+* Tue Nov 03 2015 Helio Chissini de Castro <helio@kde.org> - 5.6.0-0.1
+- Start to implement 5.6.0 rc, bootstrapped
+
 * Thu Oct 15 2015 Helio Chissini de Castro <helio@kde.org> - 5.5.1-2
 - Update to final release 5.5.1
 
@@ -523,30 +599,30 @@ fi
 * Fri Nov 28 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.8.rc
 - 5.4.0-rc
 
-* Mon Nov 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.7.beta
+* Mon Nov 03 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.7.rc
 - out-of-tree build, use %%qmake_qt5
 
-* Fri Oct 31 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.6.beta
+* Fri Oct 31 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.6.rc
 - respin system-clucene.patch
 
-* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.5.beta
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.5.rc
 - system-clucene patch: create path recursively in QtCLucene, CLucene can't
 
-* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.beta
+* Sun Oct 26 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.4.rc
 - disable bootstrap (reenable -doc)
 - system-clucene patch: drop -fpermissive flag
 - system-clucene patch: use toLocal8Bit instead of toStdString
 - system_clucene: BR clucene09-core-devel >= 0.9.21b-12 (-11 was broken)
 
-* Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.beta
+* Sat Oct 25 2014 Rex Dieter <rdieter@fedoraproject.org> - 5.4.0-0.3.rc
 - libQt5Designer should be in a subpackage (#1156685)
 - -doc: disable(boostrap for new clucene), drop dep on main pkg
 
-* Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.beta
+* Sat Oct 25 2014 Kevin Kofler <Kevin@tigcc.ticalc.org> 5.4.0-0.2.rc
 - BR and rebuild against reference-counting-enabled clucene09 (#1128293)
 
-* Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.beta
-- 5.4.0-beta
+* Sat Oct 18 2014 Rex Dieter <rdieter@fedoraproject.org> 5.4.0-0.1.rc
+- 5.4.0-rc
 
 * Fri Oct 17 2014 Rex Dieter <rdieter@fedoraproject.org> 5.3.2-2
 - -devel: Requires: qt5-designer-plugin-webkit
@@ -584,14 +660,14 @@ fi
 * Mon Dec 02 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.10.rc1
 - 5.2.0-rc1
 
-* Mon Nov 25 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.5.beta1
+* Mon Nov 25 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.5.rc1
 - enable -doc only on primary archs (allow secondary bootstrap)
 
-* Sat Nov 09 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.4.beta1
+* Sat Nov 09 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.4.rc1
 - rebuild (arm/qreal)
 
-* Thu Oct 24 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.3.beta1
-- 5.2.0-beta1
+* Thu Oct 24 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.3.rc1
+- 5.2.0-rc1
 
 * Wed Oct 16 2013 Rex Dieter <rdieter@fedoraproject.org> 5.2.0-0.2.alpha
 - bootstrap ppc
