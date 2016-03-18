@@ -6,8 +6,10 @@
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
+%if ! 0%{?bootstrap}
 %ifarch %{arm} %{ix86} x86_64
 %define docs 1
+%endif
 %endif
 
 #define prerelease
@@ -42,11 +44,15 @@ Source23: qdbusviewer.desktop
 %if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
 %endif
+BuildRequires: desktop-file-utils
 BuildRequires: pkgconfig(Qt5) >= %{version}
+## optional (and deprecated), include in bootstrapping only for now
+%if ! 0%{?bootstrap}
 BuildRequires: pkgconfig(Qt5WebKit)
+%global webkit 1
+%endif
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-BuildRequires: desktop-file-utils
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -363,9 +369,11 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
+%if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
 %{_qt5_plugindir}/designer/libqwebview.so
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
+%endif
 
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
