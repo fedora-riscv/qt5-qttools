@@ -1,0 +1,12 @@
+diff -up qttools-opensource-src-5.6.0-beta/src/qdoc/qdocindexfiles.cpp.orig qttools-opensource-src-5.6.0-beta/src/qdoc/qdocindexfiles.cpp
+--- qttools-opensource-src-5.6.0-beta/src/qdoc/qdocindexfiles.cpp.orig	2015-12-14 10:58:18.000000000 -0600
++++ qttools-opensource-src-5.6.0-beta/src/qdoc/qdocindexfiles.cpp	2016-01-17 20:42:45.946004310 -0600
+@@ -1531,7 +1531,7 @@ void QDocIndexFiles::generateIndexSectio
+             const Aggregate* inner = static_cast<const Aggregate*>(node);
+ 
+             NodeList cnodes = inner->childNodes();
+-            std::sort(cnodes.begin(), cnodes.end(), compareNodes);
++            qSort(cnodes.begin(), cnodes.end(), compareNodes);
+ 
+             foreach (Node* child, cnodes) {
+                 generateIndexSections(writer, child, generateInternalNodes);
