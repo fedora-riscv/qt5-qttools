@@ -3,8 +3,6 @@
 %global system_clucene 1
 %endif
 
-%global bootstrap 1
-
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available
 # only primary archs (for now), allow secondary to bootstrap
@@ -19,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.0
-Release: 0.2%{?prerelease:.%{prerelease}}%{?dist}.bootstrap
+Release: 2%{?prerelease:.%{prerelease}}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
