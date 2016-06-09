@@ -16,8 +16,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.6.0
-Release: 3%{?prerelease:.%{prerelease}}%{?dist}
+Version: 5.6.1
+Release: 1%{?prerelease:.%{prerelease}}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -492,6 +492,9 @@ fi
 
 
 %changelog
+* Thu Jun 09 2016 Jan Grulich <jgrulich@redhat.com> - 5.6.1-1
+- Update to 5.6.1
+
 * Sun Mar 20 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-3
 - rebuild
 
