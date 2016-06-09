@@ -45,7 +45,6 @@ Source23: qdbusviewer.desktop
 BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
-BuildRequires: pkgconfig(Qt5) >= %{version}
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
 BuildRequires: pkgconfig(Qt5WebKit)
