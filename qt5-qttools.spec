@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.1
-Release: 1%{?prerelease:.%{prerelease}}%{?dist}
+Release: 2%{?prerelease:.%{prerelease}}%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -44,7 +44,6 @@ Source23: qdbusviewer.desktop
 %if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
 %endif
-BuildRequires: double-conversion-devel
 BuildRequires: desktop-file-utils
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
@@ -492,6 +491,9 @@ fi
 
 
 %changelog
+* Fri Jun 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-2
+- drop BR: double-conversion (fix qtdeclarative instead)
+
 * Thu Jun 09 2016 Jan Grulich <jgrulich@redhat.com> - 5.6.1-1
 - Update to 5.6.1
 
