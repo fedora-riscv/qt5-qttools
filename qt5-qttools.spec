@@ -44,6 +44,7 @@ Source23: qdbusviewer.desktop
 %if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
 %endif
+BuildRequires: double-conversion-devel
 BuildRequires: desktop-file-utils
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
