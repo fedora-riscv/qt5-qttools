@@ -3,25 +3,16 @@
 %global system_clucene 1
 %endif
 
-# define to build docs, need to undef this for bootstrapping
-# where qt5-qttools builds are not yet available
-# only primary archs (for now), allow secondary to bootstrap
-%if ! 0%{?bootstrap}
-%ifarch %{arm} %{ix86} x86_64
-%define docs 1
-%endif
-%endif
-
-#define prerelease
+#define prerelease rc
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.6.1
-Release: 2%{?prerelease:.%{prerelease}}%{?dist}
+Version: 5.7.0
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/snapshots/qt/5.6/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
+Source0: http://download.qt.io/official_releases/qt/5.7/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -45,13 +36,9 @@ Source23: qdbusviewer.desktop
 BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
-## optional (and deprecated), include in bootstrapping only for now
-%if ! 0%{?bootstrap}
-BuildRequires: pkgconfig(Qt5WebKit)
-%global webkit 1
-%endif
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
+BuildRequires: pkgconfig(Qt5Qml)
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -491,11 +478,14 @@ fi
 
 
 %changelog
-* Fri Jun 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-2
-- drop BR: double-conversion (fix qtdeclarative instead)
+* Mon Jul 04 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-
+- Compiled with gcc
 
-* Thu Jun 09 2016 Jan Grulich <jgrulich@redhat.com> - 5.6.1-1
-- Update to 5.6.1
+* Tue Jun 14 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-1
+- Qt 5.7.0 release
+
+* Mon Jun 13 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-0.1
+- Prepare 5.7.0
 
 * Sun Mar 20 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.0-3
 - rebuild
