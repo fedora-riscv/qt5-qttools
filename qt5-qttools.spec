@@ -8,7 +8,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -23,6 +23,9 @@ Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
 # workaround https://bugreports.qt-project.org/browse/QTBUG-43057
 # 'make docs' crash on el6, use qSort instead of std::sort
 Patch3: qttools-opensource-src-5.6-QTBUG-43057.patch
+
+# 32-bit MIPS needs explicit -latomic
+Patch4: qttools-opensource-src-5.7-add-libatomic.patch
 
 ## upstream patches
 
@@ -187,7 +190,9 @@ rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
 %patch3 -p1 -b .QTBUG-43057
-
+%ifarch %{mips32}
+%patch4 -p1 -b .libatomic
+%endif
 
 %build
 mkdir %{_target_platform}
@@ -478,6 +483,9 @@ fi
 
 
 %changelog
+* Fri Aug 12 2016 Michal Toman <mtoman@fedoraproject.org> - 5.7.0-3
+- Add explicit -latomic on 32-bit MIPS
+
 * Mon Jul 04 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-
 - Compiled with gcc
 
