@@ -486,7 +486,7 @@ fi
 * Fri Aug 12 2016 Michal Toman <mtoman@fedoraproject.org> - 5.7.0-3
 - Add explicit -latomic on 32-bit MIPS
 
-* Mon Jul 04 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-
+* Mon Jul 04 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-2
 - Compiled with gcc
 
 * Tue Jun 14 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.0-1
