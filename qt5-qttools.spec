@@ -15,7 +15,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.6.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -454,7 +454,13 @@ fi
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/*.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -462,6 +468,8 @@ fi
 %{_qt5_libdir}/libQt5UiTools.prl
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
 %if 0%{?docs}
 %files doc
@@ -485,7 +493,10 @@ fi
 
 
 %changelog
-* Wed Nov 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-0.1
+* Mon Nov 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-2
+- -static: move qt_lib_uitools*.pri here (#1396836)
+
+* Wed Nov 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-1
 - 5.6.2
 
 * Fri Jun 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-2
