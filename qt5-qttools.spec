@@ -8,7 +8,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -452,7 +452,13 @@ fi
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/*.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -460,6 +466,8 @@ fi
 %{_qt5_libdir}/libQt5UiTools.prl
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
 %if 0%{?docs}
 %files doc
@@ -483,6 +491,9 @@ fi
 
 
 %changelog
+* Mon Nov 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.0-4
+- -static: move qt_lib_uitools*.pri here (#1396836)
+
 * Fri Aug 12 2016 Michal Toman <mtoman@fedoraproject.org> - 5.7.0-3
 - Add explicit -latomic on 32-bit MIPS
 
