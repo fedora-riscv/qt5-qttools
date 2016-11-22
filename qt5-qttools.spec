@@ -12,16 +12,14 @@
 %endif
 %endif
 
-#define prerelease
-
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.6.1
-Release: 2%{?prerelease:.%{prerelease}}%{?dist}
+Version: 5.6.2
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/snapshots/qt/5.6/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
+Source0: http://download.qt.io/official_releases/qt/5.6/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -40,10 +38,6 @@ Source21: designer.desktop
 Source22: linguist.desktop
 Source23: qdbusviewer.desktop
 
-# %%check needs cmake (and don't want to mess with cmake28)
-%if 0%{?fedora} || 0%{?rhel} > 6
-BuildRequires: cmake
-%endif
 BuildRequires: desktop-file-utils
 ## optional (and deprecated), include in bootstrapping only for now
 %if ! 0%{?bootstrap}
@@ -273,7 +267,7 @@ sed -i -e 's| Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.p
 
 
 ## work-in-progress... -- rex
-%if 0%{?fedora} || 0%{?rhel} > 6
+%if 0%{?fedora}
 %check
 # verify validity of Qt5Designer.pc
 export PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig
@@ -283,7 +277,7 @@ export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
 export LD_LIBRARY_PATH=%{buildroot}%{_qt5_libdir}
 mkdir tests/auto/cmake/%{_target_platform}
 pushd tests/auto/cmake/%{_target_platform}
-cmake ..
+cmake .. ||:
 ctest --output-on-failure ||:
 popd
 %endif
@@ -460,7 +454,13 @@ fi
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/*.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -468,6 +468,8 @@ fi
 %{_qt5_libdir}/libQt5UiTools.prl
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
 %if 0%{?docs}
 %files doc
@@ -491,6 +493,12 @@ fi
 
 
 %changelog
+* Mon Nov 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-2
+- -static: move qt_lib_uitools*.pri here (#1396836)
+
+* Wed Nov 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.2-1
+- 5.6.2
+
 * Fri Jun 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.6.1-2
 - drop BR: double-conversion (fix qtdeclarative instead)
 
