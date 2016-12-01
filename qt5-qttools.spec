@@ -3,26 +3,20 @@
 %global system_clucene 1
 %endif
 
-#define prerelease rc
-
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.7.0
-Release: 4%{?dist}
+Version: 5.7.1
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/official_releases/qt/5.7/%{version}%{?prerelease:-%{prerelease}}/submodules/%{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}.tar.xz
+Source0: http://download.qt.io/official_releases/qt/5.7/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
 Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
-
-# workaround https://bugreports.qt-project.org/browse/QTBUG-43057
-# 'make docs' crash on el6, use qSort instead of std::sort
-Patch3: qttools-opensource-src-5.6-QTBUG-43057.patch
 
 # 32-bit MIPS needs explicit -latomic
 Patch4: qttools-opensource-src-5.7-add-libatomic.patch
@@ -41,6 +35,7 @@ BuildRequires: cmake
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
+BUildRequires: qt5-qtwebview >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 
 %if 0%{?system_clucene}
@@ -181,7 +176,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n %{qt_module}-opensource-src-%{version}%{?prerelease:-%{prerelease}}
+%setup -q -n %{qt_module}-opensource-src-%{version}
 
 %if 0%{?system_clucene}
 %patch1 -p1 -b .system_clucene
@@ -189,7 +184,6 @@ Requires: %{name}-common = %{version}-%{release}
 rm -rf src/assistant/3rdparty/clucene
 %endif
 %patch2 -p1 -b .qmake-qt5
-%patch3 -p1 -b .QTBUG-43057
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
 %endif
@@ -446,19 +440,14 @@ fi
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
 %{_qt5_libdir}/libQt5Help.so
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
+%{_qt5_archdatadir}/mkspecs/modules/*.pri
+%{_qt5_plugindir}/designer/libqwebview.so
+%{_qt5_libdir}/cmake/Qt5Designer/*
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -466,8 +455,6 @@ fi
 %{_qt5_libdir}/libQt5UiTools.prl
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
 %if 0%{?docs}
 %files doc
@@ -491,6 +478,9 @@ fi
 
 
 %changelog
+* Wed Nov 22 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.1-1
+- New upstream version
+
 * Mon Nov 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.0-4
 - -static: move qt_lib_uitools*.pri here (#1396836)
 
