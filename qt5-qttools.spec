@@ -3,6 +3,14 @@
 %global system_clucene 1
 %endif
 
+%global bootstrap 1
+
+# define to build docs, need to undef this for bootstrapping
+# where qt5-qttools builds are not yet available, for example
+%if ! 0%{?bootstrap}
+%define docs 1
+%endif
+
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.1
@@ -35,7 +43,6 @@ BuildRequires: cmake
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-static >= %{version}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
-BUildRequires: qt5-qtwebview >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 
 %if 0%{?system_clucene}
@@ -124,11 +131,15 @@ Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 %description -n qt5-designer
 %{summary}.
 
+## consider renaming to -webview instead?  -- rex
+%if 0%{?webkit}
 %package -n qt5-designer-plugin-webkit
 Summary: Qt5 designer plugin for WebKit
+BuildRequires: qt5-qtwebview >= %{version}
 Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %description -n qt5-designer-plugin-webkit
 %{summary}.
+%endif
 
 %package -n qt5-linguist
 Summary: Qt5 Linguist Tools
@@ -440,14 +451,19 @@ fi
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
 %{_qt5_libdir}/libQt5Help.so
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/*.pri
-%{_qt5_plugindir}/designer/libqwebview.so
-%{_qt5_libdir}/cmake/Qt5Designer/*
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
@@ -455,6 +471,8 @@ fi
 %{_qt5_libdir}/libQt5UiTools.prl
 %{_qt5_libdir}/cmake/Qt5UiTools/
 %{_qt5_libdir}/pkgconfig/Qt5UiTools.pc
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
+%{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
 %if 0%{?docs}
 %files doc
