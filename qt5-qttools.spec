@@ -3,12 +3,11 @@
 %global system_clucene 1
 %endif
 
-%global bootstrap 1
-
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available, for example
 %if ! 0%{?bootstrap}
-%define docs 1
+%global docs 1
+%global webkit 1
 %endif
 
 Summary: Qt5 - QtTool components
@@ -131,11 +130,10 @@ Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 %description -n qt5-designer
 %{summary}.
 
-## consider renaming to -webview instead?  -- rex
 %if 0%{?webkit}
 %package -n qt5-designer-plugin-webkit
 Summary: Qt5 designer plugin for WebKit
-BuildRequires: qt5-qtwebview >= %{version}
+BuildRequires: pkgconfig(Qt5WebKitWidgets)
 Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 %description -n qt5-designer-plugin-webkit
 %{summary}.
@@ -496,6 +494,9 @@ fi
 
 
 %changelog
+* Thu Dec 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
+- de-bootstrap, enable -doc/-webkit
+
 * Wed Nov 22 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.1-1
 - New upstream version
 
