@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -226,7 +226,7 @@ desktop-file-install \
 # icons
 install -m644 -p -D src/assistant/assistant/images/assistant.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/assistant-qt5.png
 install -m644 -p -D src/assistant/assistant/images/assistant-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/assistant-qt5.png
-install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/designer-qt5.png
+install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/designer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/qdbusviewer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/qdbusviewer-qt5.png
 # linguist icons
@@ -494,6 +494,9 @@ fi
 
 
 %changelog
+* Fri Dec 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
+- Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
+
 * Thu Dec 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
 - de-bootstrap, enable -doc/-webkit
 
