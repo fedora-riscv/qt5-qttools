@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -235,7 +235,7 @@ for icon in src/linguist/linguist/images/icons/linguist-*-32.png ; do
   install -p -m644 -D ${icon} %{buildroot}%{_datadir}/icons/hicolor/${size}x${size}/apps/linguist-qt5.png
 done
 
-# hardlink files to %{_bindir}, add -qt5 postfix to not conflict
+# hardlink files to {_bindir}, add -qt5 postfix to not conflict
 mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
@@ -497,7 +497,7 @@ fi
 * Thu Dec 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
 - de-bootstrap, enable -doc/-webkit
 
-* Wed Nov 22 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.1-1
+* Wed Nov 23 2016 Helio Chissini de Castro <helio@kde.org> - 5.7.1-1
 - New upstream version
 
 * Mon Nov 21 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.0-4
@@ -711,7 +711,7 @@ fi
 - %%check: first try
 
 * Tue Sep 10 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-2
-- ExclusiveArch: %{ix86} x86_64 %{arm}
+- ExclusiveArch: {ix86} x86_64 {arm}
 - epel-6 love
 
 * Wed Aug 28 2013 Rex Dieter <rdieter@fedoraproject.org> 5.1.1-1
