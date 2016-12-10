@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.7.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -494,6 +494,9 @@ fi
 
 
 %changelog
+* Sat Dec 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-4
+- 5.7.1 dec5 snapshot
+
 * Fri Dec 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
 - Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
 
