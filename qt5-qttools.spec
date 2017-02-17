@@ -1,5 +1,5 @@
 %global qt_module qttools
-%if 0%{?fedora} > 19 || 0%{?rhel} > 6
+%if (0%{?fedora} > 19 && 0%{?fedora} < 26) || 0%{?rhel} > 6
 %global system_clucene 1
 %endif
 
@@ -494,6 +494,9 @@ fi
 
 
 %changelog
+* Fri Feb 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-5
+- disable system_lucene on f26+ (#1424227, #1424046)
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.7.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
