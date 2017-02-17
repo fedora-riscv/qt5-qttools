@@ -1,5 +1,5 @@
 %global qt_module qttools
-%if 0%{?fedora} > 19 || 0%{?rhel} > 6
+%if (0%{?fedora} > 19 && 0%{?fedora} < 26) || 0%{?rhel} > 6
 %global system_clucene 1
 %endif
 
@@ -511,6 +511,18 @@ fi
 * Thu Jan 26 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-1
 - Initial bootstraped 5.8.0
 - Created a meta package called qt5-doctools to avoid the mess of multiple tools
+
+* Fri Feb 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-5
+- disable system_lucene on f26+ (#1424227, #1424046)
+
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.7.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Sat Dec 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-4
+- 5.7.1 dec5 snapshot
+
+* Fri Dec 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
+- Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
 
 * Thu Dec 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
 - de-bootstrap, enable -doc/-webkit
