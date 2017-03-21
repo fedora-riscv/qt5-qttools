@@ -122,6 +122,9 @@ Conflicts: qt5-tools < 5.4.0-0.2
 
 %package -n qt5-assistant
 Summary: Documentation browser for Qt5
+%if ! 0%{?system_clucene}
+Provides: bundled(clucene09)
+%endif
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-assistant
 %{summary}.
@@ -511,6 +514,9 @@ fi
 * Thu Jan 26 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-1
 - Initial bootstraped 5.8.0
 - Created a meta package called qt5-doctools to avoid the mess of multiple tools
+
+* Tue Mar 21 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-6
+- -assistant: Provides: bundled(clucene09) (f26+)
 
 * Fri Feb 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-5
 - disable system_lucene on f26+ (#1424227, #1424046)
