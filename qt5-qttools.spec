@@ -1,23 +1,27 @@
 %global qt_module qttools
-%if (0%{?fedora} > 19 && 0%{?fedora} < 26) || 0%{?rhel} > 6
+%if 0%{?fedora} > 19 || 0%{?rhel} > 6
 %global system_clucene 1
 %endif
+
+%define bootstrap 0
+
+# Webkit still not available
+%global webkit 0
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available, for example
 %if ! 0%{?bootstrap}
 %global docs 1
-%global webkit 1
 %endif
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.7.1
-Release: 6%{?dist}
+Version: 5.8.0
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/official_releases/qt/5.7/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+Source0: http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -41,8 +45,10 @@ BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qtbase-static >= %{version}
+%if ! 0%{?bootstrap}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
+%endif
 
 %if 0%{?system_clucene}
 BuildRequires: clucene09-core-devel >= 0.9.21b-12
@@ -72,10 +78,7 @@ Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
 Requires: qt5-qtbase-devel%{?_isa}
-Requires: qt5-qdoc = %{version}-%{release}
-Requires: qt5-qhelpgenerator = %{version}-%{release}
-Requires: qt5-designer = %{version}-%{release}
-Requires: qt5-linguist = %{version}-%{release}
+Requires: qt5-doctools = %{version}-%{release}
 %description devel
 %{summary}.
 
@@ -119,9 +122,6 @@ Conflicts: qt5-tools < 5.4.0-0.2
 
 %package -n qt5-assistant
 Summary: Documentation browser for Qt5
-%if ! 0%{?system_clucene}
-Provides: bundled(clucene09)
-%endif
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-assistant
 %{summary}.
@@ -156,23 +156,24 @@ Requires: %{name}-common = %{version}-%{release}
 QDbusviewer can be used to inspect D-Bus objects of running programs
 and invoke methods on those objects.
 
-%package -n qt5-qhelpgenerator
-Summary: Qt5 Help generator tool
-Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
-%{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
-%description -n qt5-qhelpgenerator
+%package -n qt5-doctools
+Summary: Qt5 doc tools package
+Provides: qt5-qdoc = %{version}
+Obsoletes: qt5-qdoc < 5.8.0
+Provides: qt5-qhelpgenerator = %{version}
+Obsoletes: qt5-qhelpgenerator < 5.8.0
+Provides: qt5-qtattributionsscanner = %{version}
+Obsoletes: qt5-qtattributionsscanner < 5.8.0
+Requires: qt5-qtattributionsscanner = %{version}
 
-%package -n qt5-qdoc
-Summary: Qt5 documentation generator
-Requires: %{name}%{?_isa} = %{version}-%{release}
-%description -n qt5-qdoc
+%description -n qt5-doctools
 %{summary}.
 
 %if 0%{?docs}
 %package doc
 Summary: API documentation for %{name}
-BuildRequires: qt5-qdoc
-BuildRequires: qt5-qhelpgenerator
+BuildRequires: qt5-doctools
+BuildRequires: qt5-qtbase-doc
 BuildArch: noarch
 Conflicts: qt5-qtbase-doc < 5.6.0
 
@@ -229,7 +230,7 @@ desktop-file-install \
 # icons
 install -m644 -p -D src/assistant/assistant/images/assistant.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/assistant-qt5.png
 install -m644 -p -D src/assistant/assistant/images/assistant-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/assistant-qt5.png
-install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/designer-qt5.png
+install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/designer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/qdbusviewer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/qdbusviewer-qt5.png
 # linguist icons
@@ -243,7 +244,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
   case "${i}" in
-   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo)
+   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo|qtattributionsscanner)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt5
       ln -sv ${i} ${i}-qt5
       ;;
@@ -336,6 +337,26 @@ fi
 %{_datadir}/applications/*assistant.desktop
 %{_datadir}/icons/hicolor/*/apps/assistant*.*
 
+%post -n qt5-doctools
+touch --no-create %{_datadir}/icons/hicolor ||:
+
+%posttrans -n qt5-doctools
+gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
+
+%postun -n qt5-doctools
+if [ $1 -eq 0 ] ; then
+touch --no-create %{_datadir}/icons/hicolor ||:
+gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
+fi
+
+%files -n qt5-doctools
+%{_bindir}/qdoc*
+%{_qt5_bindir}/qdoc*
+%{_bindir}/qhelpgenerator*
+%{_qt5_bindir}/qhelpgenerator*
+%{_bindir}/qtattributionsscanner-qt5
+%{_qt5_bindir}/qtattributionsscanner*
+
 %post -n qt5-designer
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -354,17 +375,6 @@ fi
 %{_qt5_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
-%dir %{_qt5_libdir}/cmake/Qt5Designer/
-%{_qt5_plugindir}/designer/libqquickwidget.so
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QQuickWidgetPlugin.cmake
-%{_qt5_plugindir}/designer/libcontainerextension.so
-%{_qt5_plugindir}/designer/libcustomwidgetplugin.so
-%{_qt5_plugindir}/designer/libtaskmenuextension.so
-%{_qt5_plugindir}/designer/libworldtimeclockplugin.so
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_AnalogClockPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_MultiPageWidgetPlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_TicTacToePlugin.cmake
-%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_WorldTimeClockPlugin.cmake
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
@@ -422,13 +432,6 @@ fi
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
-%files -n qt5-qdoc
-%{_bindir}/qdoc*
-%{_qt5_bindir}/qdoc*
-
-%files -n qt5-qhelpgenerator
-%{_bindir}/qhelpgenerator*
-%{_qt5_bindir}/qhelpgenerator*
 
 %files devel
 %{_bindir}/pixeltool*
@@ -490,27 +493,24 @@ fi
 %{_qt5_docdir}/qtlinguist/
 %{_qt5_docdir}/qtuitools.qch
 %{_qt5_docdir}/qtuitools/
-%endif
 
 %files examples
 %{_qt5_examplesdir}/
-
+%{_qt5_plugindir}/designer/*
+%dir %{_qt5_libdir}/cmake/Qt5Designer
+%{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_*
+%endif
 
 %changelog
-* Tue Mar 21 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-6
-- -assistant: Provides: bundled(clucene09) (f26+)
+* Mon Jan 30 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-3
+- Debootstrap
 
-* Fri Feb 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-5
-- disable system_lucene on f26+ (#1424227, #1424046)
+* Fri Jan 27 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-2
+- Obsolete/Provides all older qdoc/helpgenerator packages in favor of doctools
 
-* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.7.1-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
-
-* Sat Dec 10 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-4
-- 5.7.1 dec5 snapshot
-
-* Fri Dec 02 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-3
-- Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
+* Thu Jan 26 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-1
+- Initial bootstraped 5.8.0
+- Created a meta package called qt5-doctools to avoid the mess of multiple tools
 
 * Thu Dec 01 2016 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-2
 - de-bootstrap, enable -doc/-webkit
