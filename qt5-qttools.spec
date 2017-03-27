@@ -3,7 +3,7 @@
 %global system_clucene 1
 %endif
 
-%define bootstrap 0
+%global bootstrap 1
 
 # Webkit still not available
 %global webkit 0
@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.8.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -504,15 +504,10 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_*
 %endif
 
+
 %changelog
-* Mon Jan 30 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-3
-- Debootstrap
-
-* Fri Jan 27 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-2
-- Obsolete/Provides all older qdoc/helpgenerator packages in favor of doctools
-
-* Thu Jan 26 2017 Helio Chissini de Castro <helio@kde.org> - 5.8.0-1
-- Initial bootstraped 5.8.0
+* Mon Mar 27 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-4
+- bootstrap 5.8.0 (rawhide)
 - Created a meta package called qt5-doctools to avoid the mess of multiple tools
 
 * Tue Mar 21 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.7.1-6
