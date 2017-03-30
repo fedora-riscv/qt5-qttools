@@ -3,10 +3,10 @@
 %global system_clucene 1
 %endif
 
-%global bootstrap 1
+#global bootstrap 1
 
-# Webkit still not available
-%global webkit 0
+# when Webkit is available
+#global webkit 1
 
 # define to build docs, need to undef this for bootstrapping
 # where qt5-qttools builds are not yet available, for example
@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.8.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -506,6 +506,9 @@ fi
 
 
 %changelog
+* Thu Mar 30 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-5
+- de-bootstrap
+
 * Mon Mar 27 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-4
 - bootstrap 5.8.0 (rawhide)
 - Created a meta package called qt5-doctools to avoid the mess of multiple tools
