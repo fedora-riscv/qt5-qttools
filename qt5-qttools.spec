@@ -17,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.8.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -77,8 +77,10 @@ Requires: %{name}-libs-clucene%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
-Requires: qt5-qtbase-devel%{?_isa}
 Requires: qt5-doctools = %{version}-%{release}
+Requires: qt5-designer = %{version}-%{release}
+Requires: qt5-linguist = %{version}-%{release}
+Requires: qt5-qtbase-devel%{?_isa}
 %description devel
 %{summary}.
 
@@ -506,6 +508,9 @@ fi
 
 
 %changelog
+* Fri Mar 31 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-6
+- -devel: restore Requires: qt5-designer qt5-linguist
+
 * Thu Mar 30 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-5
 - de-bootstrap
 
