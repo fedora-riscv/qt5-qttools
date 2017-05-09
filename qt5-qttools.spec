@@ -3,25 +3,14 @@
 %global system_clucene 1
 %endif
 
-#global bootstrap 1
-
-# when Webkit is available
-#global webkit 1
-
-# define to build docs, need to undef this for bootstrapping
-# where qt5-qttools builds are not yet available, for example
-%if ! 0%{?bootstrap}
-%global docs 1
-%endif
-
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.8.0
-Release: 6%{?dist}
+Version: 5.9.0
+Release: 0.beta.3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: http://download.qt.io/official_releases/qt/5.8/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+Source0: https://download.qt.io/development_releases/qt/5.9/%{version}-beta3/submodules/%{qt_module}-opensource-src-%{version}-beta3.tar.xz
 
 Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
@@ -174,18 +163,6 @@ Requires: qt5-qtattributionsscanner = %{version}
 %description -n qt5-doctools
 %{summary}.
 
-%if 0%{?docs}
-%package doc
-Summary: API documentation for %{name}
-BuildRequires: qt5-doctools
-BuildRequires: qt5-qtbase-doc
-BuildArch: noarch
-Conflicts: qt5-qtbase-doc < 5.6.0
-
-%description doc
-%{summary}.
-%endif
-
 %package examples
 Summary: Programming examples for %{name}
 Requires: %{name}-common = %{version}-%{release}
@@ -194,7 +171,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n %{qt_module}-opensource-src-%{version}
+%setup -q -n %{qt_module}-opensource-src-%{version}-beta3
 
 %if 0%{?system_clucene}
 %patch1 -p1 -b .system_clucene
@@ -213,18 +190,11 @@ pushd %{_target_platform}
 
 make %{?_smp_mflags}
 
-%if 0%{?docs}
-make %{?_smp_mflags} docs
-%endif
 popd
 
 
 %install
 make install INSTALL_ROOT=%{buildroot} -C %{_target_platform}
-
-%if 0%{?docs}
-make install_docs INSTALL_ROOT=%{buildroot} -C %{_target_platform}
-%endif
 
 # Add desktop files, --vendor=qt4 helps avoid possible conflicts with qt3/qt4
 desktop-file-install \
@@ -483,31 +453,16 @@ fi
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
-%if 0%{?docs}
-%files doc
-%license LICENSE.FDL
-%{_qt5_docdir}/qtassistant.qch
-%{_qt5_docdir}/qtassistant/
-%{_qt5_docdir}/qtdesigner.qch
-%{_qt5_docdir}/qtdesigner/
-%{_qt5_docdir}/qdoc.qch
-%{_qt5_docdir}/qdoc/
-%{_qt5_docdir}/qthelp.qch
-%{_qt5_docdir}/qthelp/
-%{_qt5_docdir}/qtlinguist.qch
-%{_qt5_docdir}/qtlinguist/
-%{_qt5_docdir}/qtuitools.qch
-%{_qt5_docdir}/qtuitools/
-
 %files examples
 %{_qt5_examplesdir}/
 %{_qt5_plugindir}/designer/*
 %dir %{_qt5_libdir}/cmake/Qt5Designer
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_*
-%endif
-
 
 %changelog
+* Tue May 09 2017 Helio Chissini de Castro <helio@kde.org> - 5.9.0-0.beta.3
+- Upstream beta 3
+
 * Fri Mar 31 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.8.0-6
 - -devel: restore Requires: qt5-designer qt5-linguist
 
