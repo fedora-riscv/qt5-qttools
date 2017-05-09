@@ -1,7 +1,4 @@
 %global qt_module qttools
-%if (0%{?fedora} > 19 && 0%{?fedora} < 26) || 0%{?rhel} > 6
-%global system_clucene 1
-%endif
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
@@ -11,8 +8,6 @@ Release: 0.beta.3%{?dist}
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
 Source0: https://download.qt.io/development_releases/qt/5.9/%{version}-beta3/submodules/%{qt_module}-opensource-src-%{version}-beta3.tar.xz
-
-Patch1: qttools-opensource-src-5.3.2-system-clucene.patch
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -39,10 +34,6 @@ BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 %endif
 
-%if 0%{?system_clucene}
-BuildRequires: clucene09-core-devel >= 0.9.21b-12
-%endif
-
 Requires: %{name}-common = %{version}-%{release}
 
 %{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
@@ -62,7 +53,6 @@ BuildArch: noarch
 %package devel
 Summary: Development files for %{name}
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-libs-clucene%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designer%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-designercomponents%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs-help%{?_isa} = %{version}-%{release}
@@ -77,14 +67,6 @@ Requires: qt5-qtbase-devel%{?_isa}
 Summary: Static library files for %{name}
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 %description static
-%{summary}.
-
-%package libs-clucene
-Summary: Qt5 CLucene runtime library
-Requires: %{name}-common = %{version}-%{release}
-# when split happened
-Conflicts: qt5-tools < 5.4.0-0.2
-%description libs-clucene
 %{summary}.
 
 %package libs-designer
@@ -113,9 +95,6 @@ Conflicts: qt5-tools < 5.4.0-0.2
 
 %package -n qt5-assistant
 Summary: Documentation browser for Qt5
-%if ! 0%{?system_clucene}
-Provides: bundled(clucene09)
-%endif
 Requires: %{name}-common = %{version}-%{release}
 %description -n qt5-assistant
 %{summary}.
@@ -172,12 +151,6 @@ Requires: %{name}-common = %{version}-%{release}
 
 %prep
 %setup -q -n %{qt_module}-opensource-src-%{version}-beta3
-
-%if 0%{?system_clucene}
-%patch1 -p1 -b .system_clucene
-# bundled libs
-rm -rf src/assistant/3rdparty/clucene
-%endif
 %patch2 -p1 -b .qmake-qt5
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
@@ -272,11 +245,6 @@ popd
 
 %files common
 %license LICENSE.LGPL*
-
-%post   libs-clucene -p /sbin/ldconfig
-%postun libs-clucene -p /sbin/ldconfig
-%files  libs-clucene
-%{_qt5_libdir}/libQt5CLucene.so.5*
 
 %post   libs-designer -p /sbin/ldconfig
 %postun libs-designer -p /sbin/ldconfig
@@ -419,13 +387,10 @@ fi
 %{_qt5_bindir}/qcollectiongenerator*
 %{_qt5_bindir}/qhelpconverter*
 %{_qt5_bindir}/qtplugininfo*
-%{_qt5_headerdir}/QtCLucene/
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
 %{_qt5_headerdir}/QtHelp/
 %{_qt5_headerdir}/QtUiPlugin
-%{_qt5_libdir}/libQt5CLucene.prl
-%{_qt5_libdir}/libQt5CLucene.so
 %{_qt5_libdir}/libQt5Designer*.prl
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
@@ -436,7 +401,6 @@ fi
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
-%{_qt5_archdatadir}/mkspecs/modules/qt_lib_clucene_private.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
