@@ -3,7 +3,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.0
-Release: 0.beta.3%{?dist}
+Release: 0.4.beta3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -47,6 +47,7 @@ Obsoletes: qt5-tools < 5.4.0-0.2
 %package common
 Summary: Common files for %{name}
 BuildArch: noarch
+Obsoletes: qt5-qttools-libs-clucene < 5.9.0
 %description common
 %{summary}.
 
@@ -423,7 +424,11 @@ fi
 %dir %{_qt5_libdir}/cmake/Qt5Designer
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_*
 
+
 %changelog
+* Tue May 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.0-0.4.beta3
+- fix Release, Obsoletes: qt5-qttools-libs-clucene (#1454531)
+
 * Tue May 09 2017 Helio Chissini de Castro <helio@kde.org> - 5.9.0-0.beta.3
 - Upstream beta 3
 
