@@ -3,11 +3,11 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.0
-Release: 0.4.beta3%{?dist}
+Release: 0.1.rc%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: https://download.qt.io/development_releases/qt/5.9/%{version}-beta3/submodules/%{qt_module}-opensource-src-%{version}-beta3.tar.xz
+Source0: https://download.qt.io/development_releases/qt/5.9/%{version}-rc/submodules/%{qt_module}-opensource-src-%{version}-rc.tar.xz
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -151,7 +151,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n %{qt_module}-opensource-src-%{version}-beta3
+%setup -q -n %{qt_module}-opensource-src-%{version}-rc
 %patch2 -p1 -b .qmake-qt5
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
@@ -426,6 +426,9 @@ fi
 
 
 %changelog
+* Fri May 26 2017 Helio Chissini de Castro <helio@kde.org> - 5.9.0-0.1.rc
+- Upstream Release Candidate retagged
+
 * Tue May 23 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.0-0.4.beta3
 - fix Release, Obsoletes: qt5-qttools-libs-clucene (#1454531)
 
