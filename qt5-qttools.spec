@@ -3,7 +3,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -158,19 +158,15 @@ Requires: %{name}-common = %{version}-%{release}
 %endif
 
 %build
-mkdir %{_target_platform}
-pushd %{_target_platform}
-%{qmake_qt5} ..
+%{qmake_qt5}
 
 make %{?_smp_mflags}
 
-popd
-
 
 %install
-make install INSTALL_ROOT=%{buildroot} -C %{_target_platform}
+make install INSTALL_ROOT=%{buildroot}
 
-# Add desktop files, --vendor=qt4 helps avoid possible conflicts with qt3/qt4
+# Add desktop files, --vendor=... helps avoid possible conflicts with qt3/qt4
 desktop-file-install \
   --dir=%{buildroot}%{_datadir}/applications \
   --vendor="qt5" \
@@ -426,6 +422,9 @@ fi
 
 
 %changelog
+* Fri Jun 16 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.0-3
+- drop shadow/out-of-tree builds (#1456211,QTBUG-37417)
+
 * Fri Jun 02 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.0-2
 - rebuild
 
