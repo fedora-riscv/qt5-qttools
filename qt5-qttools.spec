@@ -2,12 +2,12 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.9.0
-Release: 3%{?dist}
+Version: 5.9.1
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: https://download.qt.io/official_releases/qt/5.9/5.9.0/submodules/qttools-opensource-src-5.9.0.tar.xz
+Source0: https://download.qt.io/official_releases/qt/5.9/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -422,6 +422,9 @@ fi
 
 
 %changelog
+* Wed Jul 19 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.1-1
+- 5.9.1
+
 * Fri Jun 16 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.0-3
 - drop shadow/out-of-tree builds (#1456211,QTBUG-37417)
 
