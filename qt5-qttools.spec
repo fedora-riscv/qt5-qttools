@@ -1,9 +1,16 @@
 %global qt_module qttools
 
+#global bootstrap 1
+
+%if ! 0%{?bootstrap}
+## don't enable until crasher fixed: https://bugzilla.redhat.com/show_bug.cgi?id=1470778
+#global webkit 1
+%endif
+
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -48,6 +55,9 @@ Obsoletes: qt5-tools < 5.4.0-0.2
 Summary: Common files for %{name}
 BuildArch: noarch
 Obsoletes: qt5-qttools-libs-clucene < 5.9.0
+%if ! 0%{?webkit}
+Obsoletes: qt5-designer-plugin-webkit < 5.9.0
+%endif
 %description common
 %{summary}.
 
@@ -422,6 +432,10 @@ fi
 
 
 %changelog
+* Fri Sep 29 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.1-4
+- Obsoletes: qt5-designer-plugin-webkit (upgrade path when webkit support is not enabled)
+- resurrect bootstrap macro (commented)
+
 * Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.9.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
