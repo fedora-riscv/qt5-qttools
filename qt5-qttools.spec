@@ -9,8 +9,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.9.1
-Release: 4%{?dist}
+Version: 5.9.2
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -432,6 +432,9 @@ fi
 
 
 %changelog
+* Mon Oct 09 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.2-1
+- 5.9.2
+
 * Fri Sep 29 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.1-4
 - Obsoletes: qt5-designer-plugin-webkit (upgrade path when webkit support is not enabled)
 - resurrect bootstrap macro (commented)
