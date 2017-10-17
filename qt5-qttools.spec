@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -35,15 +35,16 @@ Source23: qdbusviewer.desktop
 BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
+BuildRequires: qt5-qtbase-private-devel
 BuildRequires: qt5-qtbase-static >= %{version}
+# libQt5DBus.so.5(Qt_5_PRIVATE_API)
+%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 %if ! 0%{?bootstrap}
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
-
-%{?_qt5:Requires: %{_qt5}%{?_isa} >= %{_qt5_version}}
 
 # when -libs were split out, for multilib upgrade path
 Obsoletes: qt5-tools < 5.4.0-0.2
@@ -432,6 +433,9 @@ fi
 
 
 %changelog
+* Tue Oct 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.2-2
+- BR: qt5-qtbase-private-devel
+
 * Mon Oct 09 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.2-1
 - 5.9.2
 
