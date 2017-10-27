@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.9.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -35,6 +35,7 @@ Source23: qdbusviewer.desktop
 BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
+BuildRequires: /usr/bin/file
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: qt5-qtbase-static >= %{version}
 # libQt5DBus.so.5(Qt_5_PRIVATE_API)
@@ -186,7 +187,7 @@ desktop-file-install \
 # icons
 install -m644 -p -D src/assistant/assistant/images/assistant.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/assistant-qt5.png
 install -m644 -p -D src/assistant/assistant/images/assistant-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/assistant-qt5.png
-install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/designer-qt5.png
+install -m644 -p -D src/designer/src/designer/images/designer.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/designer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/qdbusviewer-qt5.png
 install -m644 -p -D src/qdbus/qdbusviewer/images/qdbusviewer-128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/qdbusviewer-qt5.png
 # linguist icons
@@ -241,6 +242,19 @@ pushd tests/auto/cmake/%{_target_platform}
 cmake ..
 ctest --output-on-failure ||:
 popd
+
+
+# check icon resolutions
+pushd %{buildroot}%{_datadir}/icons
+for RES in $(ls hicolor); do
+  for APP in designer assistant linguist qdbusviewer; do
+    if [ -e hicolor/$RES/apps/${APP}*.* ]; then
+      file hicolor/$RES/apps/${APP}*.* | grep "$(echo $RES | sed 's/x/ x /')"
+    fi
+  done
+done
+popd
+
 %endif
 
 
@@ -433,6 +447,9 @@ fi
 
 
 %changelog
+* Fri Oct 27 2017 Miro Hrončok <mhroncok@redhat.com> - 5.9.2-3
+- Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
+
 * Tue Oct 17 2017 Rex Dieter <rdieter@fedoraproject.org> - 5.9.2-2
 - BR: qt5-qtbase-private-devel
 
