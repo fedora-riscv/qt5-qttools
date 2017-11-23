@@ -9,8 +9,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.9.2
-Release: 3%{?dist}
+Version: 5.9.3
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -447,6 +447,9 @@ fi
 
 
 %changelog
+* Thu Nov 23 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.3-1
+- 5.9.3
+
 * Fri Oct 27 2017 Miro Hrončok <mhroncok@redhat.com> - 5.9.2-3
 - Qt 5 Designer has 128x128 icon in 32x32 folder (#1400972)
 
