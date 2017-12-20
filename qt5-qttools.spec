@@ -9,12 +9,12 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.9.3
+Version: 5.10.0
 Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: https://download.qt.io/official_releases/qt/5.9/%{version}/submodules/%{qt_module}-opensource-src-%{version}.tar.xz
+Source0: https://download.qt.io/official_releases/qt/5.10/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -163,7 +163,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %prep
-%setup -q -n %{qt_module}-opensource-src-%{version}
+%setup -q -n %{qt_module}-everywhere-src-%{version}
 %patch2 -p1 -b .qmake-qt5
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
@@ -447,6 +447,9 @@ fi
 
 
 %changelog
+* Tue Dec 19 2017 Jan Grulich <jgrulich@redhat.com> - 5.10.0-1
+- 5.10.0
+
 * Thu Nov 23 2017 Jan Grulich <jgrulich@redhat.com> - 5.9.3-1
 - 5.9.3
 
