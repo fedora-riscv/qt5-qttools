@@ -336,7 +336,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
-%end
+%endif
 
 %files -n qt5-designer
 %{_bindir}/designer*
