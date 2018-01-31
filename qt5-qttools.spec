@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.10.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -268,22 +268,20 @@ popd
 %files common
 %license LICENSE.LGPL*
 
-%post   libs-designer -p /sbin/ldconfig
-%postun libs-designer -p /sbin/ldconfig
+%ldconfig_scriptlets libs-designer
 %files  libs-designer
 %{_qt5_libdir}/libQt5Designer.so.5*
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
 
-%post   libs-designercomponents -p /sbin/ldconfig
-%postun libs-designercomponents -p /sbin/ldconfig
+%ldconfig_scriptlets libs-designercomponents
 %files  libs-designercomponents
 %{_qt5_libdir}/libQt5DesignerComponents.so.5*
 
-%post   libs-help -p /sbin/ldconfig
-%postun libs-help -p /sbin/ldconfig
+%ldconfig_scriptlets libs-help
 %files  libs-help
 %{_qt5_libdir}/libQt5Help.so.5*
 
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post -n qt5-assistant
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -295,6 +293,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
+%endif
 
 %files -n qt5-assistant
 %{_bindir}/assistant-qt5
@@ -302,6 +301,7 @@ fi
 %{_datadir}/applications/*assistant.desktop
 %{_datadir}/icons/hicolor/*/apps/assistant*.*
 
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post -n qt5-doctools
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -313,6 +313,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
+%endif
 
 %files -n qt5-doctools
 %{_bindir}/qdoc*
@@ -322,6 +323,7 @@ fi
 %{_bindir}/qtattributionsscanner-qt5
 %{_qt5_bindir}/qtattributionsscanner*
 
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post -n qt5-designer
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -334,6 +336,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
+%end
 
 %files -n qt5-designer
 %{_bindir}/designer*
@@ -347,6 +350,7 @@ fi
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_QWebViewPlugin.cmake
 %endif
 
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post -n qt5-linguist
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -359,6 +363,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
+%endif
 
 %files -n qt5-linguist
 %{_bindir}/linguist*
@@ -379,6 +384,7 @@ fi
 %{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsMacros.cmake
 
+%if 0%{?rhel} && 0%{?rhel} <= 7
 %post -n qt5-qdbusviewer
 touch --no-create %{_datadir}/icons/hicolor ||:
 
@@ -390,6 +396,7 @@ if [ $1 -eq 0 ] ; then
 touch --no-create %{_datadir}/icons/hicolor ||:
 gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
 fi
+%endif
 
 %files -n qt5-qdbusviewer
 %{_bindir}/qdbusviewer*
@@ -447,6 +454,9 @@ fi
 
 
 %changelog
+* Wed Jan 31 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 5.10.0-2
+- Remove obsolete scriptlets
+
 * Tue Dec 19 2017 Jan Grulich <jgrulich@redhat.com> - 5.10.0-1
 - 5.10.0
 
