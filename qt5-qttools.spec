@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.10.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -36,6 +36,7 @@ BuildRequires: cmake
 %endif
 BuildRequires: desktop-file-utils
 BuildRequires: /usr/bin/file
+BuildRequires: qt5-rpm-macros >= %{version}
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: qt5-qtbase-static >= %{version}
 # libQt5DBus.so.5(Qt_5_PRIVATE_API)
@@ -454,6 +455,9 @@ fi
 
 
 %changelog
+* Thu Mar 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.10.1-2
+- BR: qt5-rpm-macros
+
 * Tue Feb 13 2018 Jan Grulich <jgrulich@redhat.com> - 5.10.1-1
 - 5.10.1
 
