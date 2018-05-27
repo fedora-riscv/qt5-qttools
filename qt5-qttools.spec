@@ -44,7 +44,7 @@ BuildRequires: qt5-qtbase-static >= %{version}
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 %if ! 0%{?bootstrap}
 # for qdoc
-BuildRequires: clang-devel
+BuildRequires: clang-devel llvm-devel
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 %endif
