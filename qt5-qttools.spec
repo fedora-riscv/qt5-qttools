@@ -43,14 +43,13 @@ BuildRequires: qt5-qtbase-static >= %{version}
 # libQt5DBus.so.5(Qt_5_PRIVATE_API)
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 %if ! 0%{?bootstrap}
+# for qdoc
+BuildRequires: clang-devel
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
-
-# when -libs were split out, for multilib upgrade path
-Obsoletes: qt5-tools < 5.4.0-0.2
 
 %description
 %{summary}.
@@ -87,16 +86,12 @@ Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 %package libs-designer
 Summary: Qt5 Designer runtime library
 Requires: %{name}-common = %{version}-%{release}
-# when split happened
-Conflicts: qt5-tools < 5.4.0-0.2
 %description libs-designer
 %{summary}.
 
 %package libs-designercomponents
 Summary: Qt5 Designer Components runtime library
 Requires: %{name}-common = %{version}-%{release}
-# when split happened
-Conflicts: qt5-tools < 5.4.0-0.2
 %description libs-designercomponents
 %{summary}.
 
