@@ -9,12 +9,13 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.10.1
-Release: 2%{?dist}
+Version: 5.11.0
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
-Source0: https://download.qt.io/official_releases/qt/5.10/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
+%global majmin %(echo %{version} | cut -d. -f1-2)
+Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -170,10 +171,11 @@ Requires: %{name}-common = %{version}-%{release}
 %patch4 -p1 -b .libatomic
 %endif
 
+
 %build
 %{qmake_qt5}
 
-make %{?_smp_mflags}
+%make_build
 
 
 %install
@@ -270,15 +272,18 @@ popd
 %license LICENSE.LGPL*
 
 %ldconfig_scriptlets libs-designer
+
 %files  libs-designer
 %{_qt5_libdir}/libQt5Designer.so.5*
 %dir %{_qt5_libdir}/cmake/Qt5Designer/
 
 %ldconfig_scriptlets libs-designercomponents
+
 %files  libs-designercomponents
 %{_qt5_libdir}/libQt5DesignerComponents.so.5*
 
 %ldconfig_scriptlets libs-help
+
 %files  libs-help
 %{_qt5_libdir}/libQt5Help.so.5*
 
@@ -405,7 +410,6 @@ fi
 %{_datadir}/applications/*qdbusviewer.desktop
 %{_datadir}/icons/hicolor/*/apps/qdbusviewer*.*
 
-
 %files devel
 %{_bindir}/pixeltool*
 %{_bindir}/qcollectiongenerator*
@@ -455,6 +459,10 @@ fi
 
 
 %changelog
+* Sat May 26 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.0-1
+- 5.11.0
+- use %%make_build
+
 * Thu Mar 08 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.10.1-2
 - BR: qt5-rpm-macros
 
