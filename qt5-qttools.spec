@@ -9,7 +9,7 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.11.2
+Version: 5.11.3
 Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
@@ -455,6 +455,9 @@ fi
 
 
 %changelog
+* Fri Dec 07 2018 Rex Dieter <rdieter@fedoraproject.org> - 5.11.3-1
+- 5.11.3
+
 * Fri Sep 21 2018 Jan Grulich <jgrulich@redhat.com> - 5.11.2-1
 - 5.11.2
 
