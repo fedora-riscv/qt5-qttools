@@ -47,9 +47,9 @@ BuildRequires: pkgconfig(Qt5Qml)
 %{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
 
 %if 0%{?bootstrap}
+%global no_examples CONFIG-=compile_examples
 Obsoletes: %{name}-examples < %{version}-%{release}
 %else
-%global no_examples CONFIG-=compile_examples
 # for qdoc
 BuildRequires: clang-devel llvm-devel
 %endif
