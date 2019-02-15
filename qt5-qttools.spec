@@ -9,8 +9,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.11.3
-Release: 2%{?dist}
+Version: 5.12.1
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -41,13 +41,17 @@ BuildRequires: qt5-rpm-macros >= %{version}
 
 BuildRequires: qt5-qtbase-private-devel
 BuildRequires: qt5-qtbase-static >= %{version}
-# libQt5DBus.so.5(Qt_5_PRIVATE_API)
-%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
-%if ! 0%{?bootstrap}
-# for qdoc
-BuildRequires: clang-devel llvm-devel
 BuildRequires: qt5-qtdeclarative-static >= %{version}
 BuildRequires: pkgconfig(Qt5Qml)
+# libQt5DBus.so.5(Qt_5_PRIVATE_API)
+%{?_qt5:Requires: %{_qt5}%{?_isa} = %{_qt5_version}}
+
+%if 0%{?bootstrap}
+Obsoletes: %{name}-examples < %{version}-%{release}
+%else
+%global no_examples CONFIG-=compile_examples
+# for qdoc
+BuildRequires: clang-devel llvm-devel
 %endif
 
 Requires: %{name}-common = %{version}-%{release}
@@ -169,7 +173,8 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %build
-%{qmake_qt5}
+%{qmake_qt5} \
+  %{?no_examples}
 
 %make_build
 
@@ -320,7 +325,9 @@ fi
 %files -n qt5-doctools
 %{_bindir}/qdoc*
 %{_qt5_bindir}/qdoc*
+%{_bindir}/qdistancefieldgenerator*
 %{_bindir}/qhelpgenerator*
+%{_qt5_bindir}/qdistancefieldgenerator*
 %{_qt5_bindir}/qhelpgenerator*
 %{_bindir}/qtattributionsscanner-qt5
 %{_qt5_bindir}/qtattributionsscanner*
@@ -409,13 +416,13 @@ fi
 %files devel
 %{_bindir}/pixeltool*
 %{_bindir}/qcollectiongenerator*
-%{_bindir}/qhelpconverter*
+#{_bindir}/qhelpconverter*
 %{_bindir}/qtdiag*
 %{_bindir}/qtplugininfo*
 %{_qt5_bindir}/pixeltool*
 %{_qt5_bindir}/qtdiag*
 %{_qt5_bindir}/qcollectiongenerator*
-%{_qt5_bindir}/qhelpconverter*
+#{_qt5_bindir}/qhelpconverter*
 %{_qt5_bindir}/qtplugininfo*
 %{_qt5_headerdir}/QtDesigner/
 %{_qt5_headerdir}/QtDesignerComponents/
@@ -447,14 +454,20 @@ fi
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_uitools_private.pri
 
+%if ! 0%{?no_examples:1}
 %files examples
 %{_qt5_examplesdir}/
 %{_qt5_plugindir}/designer/*
 %dir %{_qt5_libdir}/cmake/Qt5Designer
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5Designer_*
+%endif
 
 
 %changelog
+* Fri Feb 15 2019 Rex Dieter <rdieter@fedoraproject.org> - 5.12.1-1
+- 5.12.1
+- better bootstrap support (examples)
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.11.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
