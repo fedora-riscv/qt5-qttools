@@ -432,12 +432,15 @@ fi
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
 %{_qt5_libdir}/libQt5Help.so
+%{_qt5_libdir}/Qt5UiPlugin.la
+%{_qt5_libdir}/libQt5UiPlugin.prl
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
 %{_qt5_libdir}/cmake/Qt5Help/Qt5HelpConfig*.cmake
 %{_qt5_libdir}/cmake/Qt5UiPlugin/
 %{_qt5_libdir}/pkgconfig/Qt5Designer.pc
 %{_qt5_libdir}/pkgconfig/Qt5Help.pc
+%{_qt5_libdir}/pkgconfig/Qt5UiPlugin.pc
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designer_private.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_designercomponents_private.pri
