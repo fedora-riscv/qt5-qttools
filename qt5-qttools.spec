@@ -219,7 +219,7 @@ popd
 ## .prl/.la file love
 # nuke .prl reference(s) to %%buildroot, excessive (.la-like) libs
 pushd %{buildroot}%{_qt5_libdir}
-for prl_file in libQt5*.prl ; do
+for prl_file in *Qt5*.prl ; do
   sed -i -e "/^QMAKE_PRL_BUILD_DIR/d" ${prl_file}
   if [ -f "$(basename ${prl_file} .prl).so" ]; then
     rm -fv "$(basename ${prl_file} .prl).la"
@@ -432,7 +432,6 @@ fi
 %{_qt5_libdir}/libQt5Designer*.so
 %{_qt5_libdir}/libQt5Help.prl
 %{_qt5_libdir}/libQt5Help.so
-%{_qt5_libdir}/Qt5UiPlugin.la
 %{_qt5_libdir}/libQt5UiPlugin.prl
 %{_qt5_libdir}/cmake/Qt5Designer/Qt5DesignerConfig*.cmake
 %dir %{_qt5_libdir}/cmake/Qt5Help/
