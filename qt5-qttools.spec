@@ -265,10 +265,11 @@ popd
 %files
 %{_bindir}/qdbus-qt5
 %{_bindir}/qtpaths
+%{_bindir}/lprodump
 %{_qt5_bindir}/qdbus
 %{_qt5_bindir}/qdbus-qt5
 %{_qt5_bindir}/qtpaths
-
+%{_qt5_bindir}/lprodump
 %files common
 %license LICENSE.LGPL*
 
@@ -352,6 +353,7 @@ fi
 %{_qt5_bindir}/designer*
 %{_datadir}/applications/*designer.desktop
 %{_datadir}/icons/hicolor/*/apps/designer*.*
+%{_qt5_libdir}/cmake/Qt5DesignerComponents/Qt5DesignerComponentsConfig*.cmake
 
 %if 0%{?webkit}
 %files -n qt5-designer-plugin-webkit
