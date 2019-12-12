@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.13.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -23,6 +23,10 @@ Patch2: qttools-opensource-src-5.13.2-runqttools-with-qt5-suffix.patch
 
 # 32-bit MIPS needs explicit -latomic
 Patch4: qttools-opensource-src-5.7-add-libatomic.patch
+
+# Link against libclang-cpp.so
+# https://fedoraproject.org/wiki/Changes/Stop-Shipping-Individual-Component-Libraries-In-clang-lib-Package
+Patch5: 0001-Link-against-libclang-cpp.so-instead-of-the-clang-co.patch
 
 ## upstream patches
 
@@ -170,6 +174,7 @@ Requires: %{name}-common = %{version}-%{release}
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
 %endif
+%patch5 -p1 -b .libclang-cpp
 
 
 %build
@@ -470,6 +475,10 @@ fi
 
 
 %changelog
+* Mon Jan 06 2020 Tom Stellard <tstellar@redhat.com> - 5.13.2-4
+- Link against libclang-cpp.so
+- https://fedoraproject.org/wiki/Changes/Stop-Shipping-Individual-Component-Libraries-In-clang-lib-Package
+
 * Wed Dec 18 2019 Jan Grulich <jgrulich@redhat.com> - 5.13.2-3
 - Use -qt5 suffix for linguist tools
 
