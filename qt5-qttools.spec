@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.13.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -265,11 +265,10 @@ popd
 %files
 %{_bindir}/qdbus-qt5
 %{_bindir}/qtpaths
-%{_bindir}/lprodump
 %{_qt5_bindir}/qdbus
 %{_qt5_bindir}/qdbus-qt5
 %{_qt5_bindir}/qtpaths
-%{_qt5_bindir}/lprodump
+
 %files common
 %license LICENSE.LGPL*
 
@@ -387,9 +386,11 @@ fi
 %{_bindir}/lconvert*
 %{_bindir}/lrelease*
 %{_bindir}/lupdate*
+%{_bindir}/lprodump*
 %{_qt5_bindir}/lconvert*
 %{_qt5_bindir}/lrelease*
 %{_qt5_bindir}/lupdate*
+%{_qt5_bindir}/lprodump*
 # cmake config
 %dir %{_qt5_libdir}/cmake/Qt5LinguistTools/
 %{_qt5_libdir}/cmake/Qt5LinguistTools/Qt5LinguistToolsConfig*.cmake
@@ -469,6 +470,9 @@ fi
 
 
 %changelog
+* Wed Dec 18 2019 Jan Grulich <jgrulich@redhat.com> - 5.13.2-2
+- Move lprodump to qt5-linguist
+
 * Mon Dec 09 2019 Jan Grulich <jgrulich@redhat.com> - 5.13.2-1
 - 5.13.2
 
