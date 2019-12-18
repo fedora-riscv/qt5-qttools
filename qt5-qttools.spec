@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.13.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -19,7 +19,7 @@ Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submod
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
-Patch2: qttools-opensource-src-5.5.0-qmake-qt5.patch
+Patch2: qttools-opensource-src-5.13.2-runqttools-with-qt5-suffix.patch
 
 # 32-bit MIPS needs explicit -latomic
 Patch4: qttools-opensource-src-5.7-add-libatomic.patch
@@ -166,7 +166,7 @@ Requires: %{name}-common = %{version}-%{release}
 
 %prep
 %setup -q -n %{qt_module}-everywhere-src-%{version}
-%patch2 -p1 -b .qmake-qt5
+%patch2 -p1 -b ..runqttools-with-qt5-suffix.patch
 %ifarch %{mips32}
 %patch4 -p1 -b .libatomic
 %endif
@@ -205,7 +205,7 @@ mkdir %{buildroot}%{_bindir}
 pushd %{buildroot}%{_qt5_bindir}
 for i in * ; do
   case "${i}" in
-   assistant|designer|lconvert|linguist|lrelease|lupdate|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo|qtattributionsscanner)
+   assistant|designer|lconvert|linguist|lrelease|lupdate|lprodump|pixeltool|qcollectiongenerator|qdbus|qdbusviewer|qhelpconverter|qhelpgenerator|qtplugininfo|qtattributionsscanner)
       ln -v  ${i} %{buildroot}%{_bindir}/${i}-qt5
       ln -sv ${i} ${i}-qt5
       ;;
@@ -470,6 +470,9 @@ fi
 
 
 %changelog
+* Wed Dec 18 2019 Jan Grulich <jgrulich@redhat.com> - 5.13.2-3
+- Use -qt5 suffix for linguist tools
+
 * Wed Dec 18 2019 Jan Grulich <jgrulich@redhat.com> - 5.13.2-2
 - Move lprodump to qt5-linguist
 
