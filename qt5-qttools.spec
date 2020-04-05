@@ -455,6 +455,9 @@ fi
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_help.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_help_private.pri
 %{_qt5_archdatadir}/mkspecs/modules/qt_lib_uiplugin.pri
+# putting these here for now, new stuff in 5.14, review for accuracy -- rdieter
+%{_qt5_libdir}/cmake/Qt5AttributionsScannerTools/
+%{_qt5_libdir}/cmake/Qt5DocTools/
 
 %files static
 %{_qt5_headerdir}/QtUiTools/
