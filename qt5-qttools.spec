@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -178,6 +178,12 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %build
+# Disable lto to work around lconvert segfaulting on armv7hl
+# https://bugzilla.redhat.com/show_bug.cgi?id=1884681
+%ifarch armv7hl
+%define _lto_cflags %{nil}
+%endif
+
 %{qmake_qt5} \
   %{?no_examples}
 
@@ -478,6 +484,9 @@ fi
 
 
 %changelog
+* Mon Oct 19 2020 Kalev Lember <klember@redhat.com> - 5.15.1-2
+- Disable lto to work around lconvert segfaulting on armv7hl (#1884681)
+
 * Thu Sep 10 2020 Jan Grulich <jgrulich@redhat.com> - 5.15.1-1
 - 5.15.1
 
