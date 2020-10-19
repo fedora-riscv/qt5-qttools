@@ -178,12 +178,6 @@ Requires: %{name}-common = %{version}-%{release}
 
 
 %build
-# Disable lto to work around lconvert segfaulting on armv7hl
-# https://bugzilla.redhat.com/show_bug.cgi?id=1884681
-%ifarch armv7hl
-%define _lto_cflags %{nil}
-%endif
-
 %{qmake_qt5} \
   %{?no_examples}
 
