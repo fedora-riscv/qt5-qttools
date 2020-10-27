@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -478,6 +478,9 @@ fi
 
 
 %changelog
+* Tue Oct 27 2020 Leigh Scott <leigh123linux@gmail.com> - 5.15.1-3
+- Bump to fix hash issue on rpmfusion koji
+
 * Mon Oct 19 2020 Kalev Lember <klember@redhat.com> - 5.15.1-2
 - Disable lto to work around lconvert segfaulting on armv7hl (#1884681)
 
