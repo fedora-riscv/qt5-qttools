@@ -1,80 +1,74 @@
-From 3dfe3b966f3fb069f258991b6a468816aab13908 Mon Sep 17 00:00:00 2001
-From: Tom Stellard <tstellar@redhat.com>
-Date: Thu, 12 Dec 2019 22:47:04 +0000
-Subject: [PATCH] Link against libclang-cpp.so instead of the clang component
- libraries
-
----
- src/qdoc/configure.pri | 56 +-----------------------------------------
- 1 file changed, 1 insertion(+), 55 deletions(-)
-
 diff --git a/src/qdoc/configure.pri b/src/qdoc/configure.pri
-index e9d7667c..65470129 100644
+index 4f3d776..bcd2aae 100644
 --- a/src/qdoc/configure.pri
 +++ b/src/qdoc/configure.pri
-@@ -142,61 +142,7 @@ defineTest(qtConfTest_libclang) {
-             CLANG_LIBS += -llibclang_static -ladvapi32 -lshell32 -lMincore
-         } else {
-             !equals(QMAKE_HOST.os, Darwin): CLANG_LIBS+=-Wl,--start-group
--            CLANG_LIBS += -lclangAnalysis \
--                        -lclangApplyReplacements \
--                        -lclangARCMigrate \
--                        -lclangAST \
--                        -lclangASTMatchers \
--                        -lclangBasic \
--                        -lclangChangeNamespace \
--                        -lclangCodeGen \
--                        -lclangCrossTU \
--                        -lclangDaemon \
--                        -lclangDriver \
--                        -lclangDynamicASTMatchers \
--                        -lclangEdit \
--                        -lclangFormat \
--                        -lclangFrontend \
--                        -lclangFrontendTool \
--                        -lclangHandleCXX \
--                        -lclangIncludeFixer \
--                        -lclangIncludeFixerPlugin \
--                        -lclangIndex \
--                        -lclangLex \
--                        -lclangMove \
--                        -lclangParse \
--                        -lclangQuery \
--                        -lclangReorderFields \
--                        -lclangRewrite \
--                        -lclangRewriteFrontend \
--                        -lclangSema \
--                        -lclangSerialization \
--                        -lclang_static \
--                        -lclangStaticAnalyzerCheckers \
--                        -lclangStaticAnalyzerCore \
--                        -lclangStaticAnalyzerFrontend \
--                        -lclangTidy \
--                        -lclangTidyAndroidModule \
--                        -lclangTidyBoostModule \
--                        -lclangTidyBugproneModule \
--                        -lclangTidyCERTModule \
--                        -lclangTidyCppCoreGuidelinesModule \
--                        -lclangTidyFuchsiaModule \
--                        -lclangTidyGoogleModule \
--                        -lclangTidyHICPPModule \
--                        -lclangTidyLLVMModule \
--                        -lclangTidyMiscModule \
--                        -lclangTidyModernizeModule \
--                        -lclangTidyMPIModule \
--                        -lclangTidyObjCModule \
--                        -lclangTidyPerformanceModule \
--                        -lclangTidyPlugin \
--                        -lclangTidyReadabilityModule \
--                        -lclangTidyUtils \
--                        -lclangTooling \
--                        -lclangToolingASTDiff \
--                        -lclangToolingCore \
--                        -lclangToolingRefactor \
+@@ -146,33 +146,6 @@ defineTest(qtConfTest_libclang) {
+             }
+         }
+         !equals(QMAKE_HOST.os, Darwin):!msvc: CLANG_LIBS+=-Wl,--start-group
+-        CLANG_LIBS += -lclangAnalysis \
+-                -lclangARCMigrate \
+-                -lclangAST \
+-                -lclangASTMatchers \
+-                -lclangBasic \
+-                -lclangCodeGen \
+-                -lclangCrossTU \
+-                -lclangDriver \
+-                -lclangDynamicASTMatchers \
+-                -lclangEdit \
+-                -lclangFormat \
+-                -lclangFrontend \
+-                -lclangFrontendTool \
+-                -lclangHandleCXX \
+-                -lclangIndex \
+-                -lclangLex \
+-                -lclangParse \
+-                -lclangRewrite \
+-                -lclangRewriteFrontend \
+-                -lclangSema \
+-                -lclangSerialization \
+-                -lclangStaticAnalyzerCheckers \
+-                -lclangStaticAnalyzerCore \
+-                -lclangStaticAnalyzerFrontend \
+-                -lclangTooling \
+-                -lclangToolingASTDiff \
+-                -lclangToolingCore
+ 
+         versionIsAtLeast($$CLANG_VERSION, "10.0.0") {
+             equals(QMAKE_HOST.os, Windows): \
+@@ -187,34 +160,7 @@ defineTest(qtConfTest_libclang) {
+             else: \
+                 CLANG_LIBS += -lclang_static
+ 
+-            CLANG_LIBS += \
+-                    -lclangApplyReplacements \
+-                    -lclangChangeNamespace \
+-                    -lclangDaemon \
+-                    -lclangIncludeFixer \
+-                    -lclangIncludeFixerPlugin \
+-                    -lclangMove \
+-                    -lclangQuery \
+-                    -lclangReorderFields \
+-                    -lclangTidy \
+-                    -lclangTidyAndroidModule \
+-                    -lclangTidyBoostModule \
+-                    -lclangTidyBugproneModule \
+-                    -lclangTidyCERTModule \
+-                    -lclangTidyCppCoreGuidelinesModule \
+-                    -lclangTidyFuchsiaModule \
+-                    -lclangTidyGoogleModule \
+-                    -lclangTidyHICPPModule \
+-                    -lclangTidyLLVMModule \
+-                    -lclangTidyMiscModule \
+-                    -lclangTidyModernizeModule \
+-                    -lclangTidyMPIModule \
+-                    -lclangTidyObjCModule \
+-                    -lclangTidyPerformanceModule \
+-                    -lclangTidyPlugin \
+-                    -lclangTidyReadabilityModule \
+-                    -lclangTidyUtils \
+-                    -lclangToolingRefactor \
 +            CLANG_LIBS += -lclang-cpp \
-                         -lfindAllSymbols \
-                         -lLLVMAArch64AsmParser \
-                         -lLLVMAArch64AsmPrinter \
--- 
-2.20.1
-
+                     -lfindAllSymbols
+         }
+ 
