@@ -10,7 +10,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -478,6 +478,9 @@ fi
 
 
 %changelog
+* Thu Dec 10 14:18:27 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.15.2-3
+- Bump for eln build
+
 * Tue Nov 24 07:54:16 CET 2020 Jan Grulich <jgrulich@redhat.com> - 5.15.2-2
 - Rebuild for qtbase with -no-reduce-relocations option
 
