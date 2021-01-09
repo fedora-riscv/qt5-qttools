@@ -35,6 +35,7 @@ Source21: designer.desktop
 Source22: linguist.desktop
 Source23: qdbusviewer.desktop
 
+BuildRequires: make
 # %%check needs cmake (and don't want to mess with cmake28)
 %if 0%{?fedora} || 0%{?rhel} > 6
 BuildRequires: cmake
