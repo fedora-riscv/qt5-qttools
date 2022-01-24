@@ -1,5 +1,8 @@
 %global qt_module qttools
 
+# Disable automatic .la file removal
+%global __brp_remove_la_files %nil
+
 #global bootstrap 1
 
 %if ! 0%{?bootstrap}
@@ -10,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.2
-Release: 9%{?dist}
+Release: 10%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -479,6 +482,10 @@ fi
 
 
 %changelog
+* Mon Jan 24 2022 Timm Bäeder <tbaeder@redhat.com> - 5.15.2-10
+- Disable automatic .la file removal
+- https://fedoraproject.org/wiki/Changes/RemoveLaFiles
+
 * Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5.15.2-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
