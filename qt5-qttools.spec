@@ -12,13 +12,13 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.15.2
-Release: 10%{?dist}
+Version: 5.15.3
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
 %global majmin %(echo %{version} | cut -d. -f1-2)
-Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-src-%{version}.tar.xz
+Source0: https://download.qt.io/official_releases/qt/%{majmin}/%{version}/submodules/%{qt_module}-everywhere-opensource-src-%{version}.tar.xz
 
 # help lrelease/lupdate use/prefer qmake-qt5
 # https://bugzilla.redhat.com/show_bug.cgi?id=1009893
@@ -482,6 +482,9 @@ fi
 
 
 %changelog
+* Fri Mar 04 2022 Jan Grulich <jgrulich@redhat.com> - 5.15.3-1
+- 5.15.3
+
 * Mon Jan 24 2022 Timm Bäeder <tbaeder@redhat.com> - 5.15.2-10
 - Disable automatic .la file removal
 - https://fedoraproject.org/wiki/Changes/RemoveLaFiles
