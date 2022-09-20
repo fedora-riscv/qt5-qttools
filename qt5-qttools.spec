@@ -12,8 +12,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.15.5
-Release: 3%{?dist}
+Version: 5.15.6
+Release: 1%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -482,6 +482,9 @@ fi
 
 
 %changelog
+* Tue Sep 20 2022 Jan Grulich <jgrulich@redhat.com> - 5.15.6-1
+- 5.15.6
+
 * Mon Sep 19 2022 Pete Walter <pwalter@fedoraproject.org> - 5.15.5-3
 - Rebuild for clang 15
 
