@@ -3,6 +3,10 @@
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
+%ifarch riscv64
+%global __brp_check_rpaths  %nil
+%endif
+
 #global bootstrap 1
 
 %if ! 0%{?bootstrap}
@@ -13,7 +17,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.8
-Release: 1%{?dist}
+Release: 1.rv64%{?dist}
 
 License: LGPLv3 or LGPLv2
 Url:     http://www.qt.io
@@ -482,6 +486,9 @@ fi
 
 
 %changelog
+* Mon Feb 13 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 5.15.8-1.rv64
+- Disable rpath check on riscv64.
+
 * Thu Jan 05 2023 Jan Grulich <jgrulich@redhat.com> - 5.15.8-1
 - 5.15.8
 
