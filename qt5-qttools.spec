@@ -16,8 +16,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.15.8
-Release: 3.rv64%{?dist}
+Version: 5.15.11
+Release: 1.rv64%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -249,7 +249,7 @@ sed -i -e 's| Qt5UiPlugin||g' %{buildroot}%{_qt5_libdir}/pkgconfig/Qt5Designer.p
 %if 0%{?fedora} || 0%{?rhel} > 6
 %check
 # verify validity of Qt5Designer.pc
-export PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig
+export PKG_CONFIG_PATH=%{buildroot}%{_libdir}/pkgconfig:$PKG_CONFIG_PATH
 pkg-config --print-requires --print-requires-private Qt5Designer
 export CMAKE_PREFIX_PATH=%{buildroot}%{_qt5_prefix}:%{buildroot}%{_prefix}
 export PATH=%{buildroot}%{_qt5_bindir}:%{_qt5_bindir}:$PATH
@@ -486,6 +486,24 @@ fi
 
 
 %changelog
+* Wed Nov 29 2023 Guoguo <i@qwq.trade>
+- Upgrade from upstream
+
+* Fri Oct 06 2023 Jan Grulich <jgrulich@redhat.com> - 5.15.11-1
+- 5.15.11
+
+* Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.15.10-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
+* Sun Jun 25 2023 Kalev Lember <klember@redhat.com> - 5.15.10-2
+- Fix self tests when building for flatpak
+
+* Mon Jun 12 2023 Jan Grulich <jgrulich@redhat.com> - 5.15.10-1
+- 5.15.10
+
+* Tue Apr 11 2023 Jan Grulich <jgrulich@redhat.com> - 5.15.9-1
+- 5.15.9
+
 * Sat May 13 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 5.15.8-3.rv64
 - Cherry-pick patch for Fedora 38 riscv64 rebuild.
 
