@@ -12,7 +12,7 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.15.13
+Version: 5.15.14
 Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
@@ -174,11 +174,12 @@ Requires: %{name}-common = %{version}-%{release}
 
 %prep
 %setup -q -n %{qt_module}-everywhere-src-%{version}
-%patch2 -p1 -b ..runqttools-with-qt5-suffix.patch
+%patch -P2 -p1 -b ..runqttools-with-qt5-suffix.patch
+
 %ifarch %{mips32}
-%patch4 -p1 -b .libatomic
+%patch -P4 -p1 -b .libatomic
 %endif
-%patch5 -p1 -b .libclang-cpp
+%patch -P5 -p1 -b .libclang-cpp
 
 
 %build
@@ -483,6 +484,9 @@ fi
 
 
 %changelog
+* Wed May 29 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.14-1
+- 5.15.14
+
 * Thu Mar 14 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.13-1
 - 5.15.13
 
