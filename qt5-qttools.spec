@@ -12,8 +12,8 @@
 
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
-Version: 5.15.14
-Release: 2%{?dist}
+Version: 5.15.15
+Release: 1%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -484,6 +484,9 @@ fi
 
 
 %changelog
+* Wed Sep 04 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.15-1
+- 5.15.15
+
 * Fri Jul 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 5.15.14-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
