@@ -13,7 +13,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.15
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -484,6 +484,9 @@ fi
 
 
 %changelog
+* Sun Oct 06 2024 Yaakov Selkowitz <yselkowi@redhat.com> - 5.15.15-2
+- Rebuilt for LLVM/Clang 19
+
 * Wed Sep 04 2024 Jan Grulich <jgrulich@redhat.com> - 5.15.15-1
 - 5.15.15
 
