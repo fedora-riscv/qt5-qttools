@@ -1,4 +1,4 @@
-From 526eeb2275d62e1ac4c586f6aad9fa2a1f0678f6 Mon Sep 17 00:00:00 2001
+From f5da1fd64fd848a10397d5b380a6e0fdf7330a89 Mon Sep 17 00:00:00 2001
 From: Andreas Sturmlechner <asturm@gentoo.org>
 Date: Fri, 18 Mar 2022 12:43:18 +0100
 Subject: [PATCH 2/3] Drop superfluous network dependency from
@@ -38,5 +38,5 @@ index bb22000c8..415347a00 100644
  QTPLUGIN.platforms = qminimal
  QTPLUGIN.sqldrivers = qsqlite
 -- 
-2.47.1
+2.51.1
 
