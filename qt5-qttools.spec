@@ -3,6 +3,14 @@
 # Disable automatic .la file removal
 %global __brp_remove_la_files %nil
 
+%ifarch riscv64
+# The debuginfo failed to read on riscv64
+# Disable automatic creation of compressed debug packages (dwz/debugedit)
+# This prevents the Bad string pointer index error.
+%define debug_package %{nil}
+%define __debug_install_post %{nil}
+%endif
+
 #global bootstrap 1
 
 %if ! 0%{?bootstrap}
@@ -13,7 +21,7 @@
 Summary: Qt5 - QtTool components
 Name:    qt5-qttools
 Version: 5.15.18
-Release: 1%{?dist}
+Release: 1.rv64%{?dist}
 
 License: LGPL-3.0-only OR GPL-3.0-only WITH Qt-GPL-exception-1.0
 Url:     http://www.qt.io
@@ -491,6 +499,9 @@ fi
 
 
 %changelog
+* Sun Nov 30 2025 Liu Yang <Yang.Liu.sn@gmail.com> - 5.15.18-1.rv64
+- Disable debuginfo packages for riscv64 while it caused built failed.
+
 * Tue Nov 04 2025 Jan Grulich <jgrulich@redhat.com> - 5.15.18-1
 - 5.15.18
 
